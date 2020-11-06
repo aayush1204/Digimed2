@@ -17,9 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from hospital import views
-# from django.contrib.auth.views import LoginView,LogoutView
+from django.contrib.auth.views import LoginView,LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-     path('',views.home_view,name=''),
+    path('',views.home_view,name=''),
+    path('doctorsignup', views.doctor_signup_view,name='doctorsignup'),
+    path('doctorregister', views.doctor_signup_view,name='doctorregister'),
+    path('doctorlogin', LoginView.as_view(template_name='hospital/doctorlogin.html')),
+    path('doctor-dashboard', views.doctor_dashboard_view,name='doctor-dashboard'),
+    path('doctorclick', views.doctorclick_view),
+    path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
+
 ]

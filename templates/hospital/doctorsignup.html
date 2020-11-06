@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{% load widget_tweaks %}
+
 <html lang="en" dir="ltr">
 
 <head>
@@ -72,53 +72,77 @@
 
         <div class="form-content">
           <div class="row">
+            <form action="doctorregister" class="bg-white p-5 contact-form" method="post" novalidate="novalidate">
+
+              {% csrf_token %}
             <div class="col-md-6">
+
+            <div class="form-group">
+              <input type="text" class="form-control" id="firstname" name="firstname" value="" placeholder="First Name">
+
+            </div>
+              
               <div class="form-group">
-                {% render_field userForm.first_name class="form-control" placeholder="First Name" %}
+                <input type="text" class="form-control" id="username" name="username" value="" placeholder="User Name">
+  
               </div>
+              
               <div class="form-group">
-                {% render_field userForm.username class="form-control" placeholder="Username" %}
+                <input type="text" class="form-control" id="clinicname" name="clinicname" value="" placeholder="ClinicName">
               </div>
+             
               <div class="form-group">
-                {% render_field doctorForm.clinicname class="form-control" placeholder="CLinic Name" %}
-              </div>
-              <div class="form-group">
-                {% render_field doctorForm.specialization class="form-control" placeholder="Specialization" %}
+
+                  <div class="select-wrap">
+                    <!-- <div class="icon"><span class="ion-ios-arrow-down"></span></div> -->
+                    <select name="specialization" id="specialization" class="form-control">
+                      <option value="" disabled selected>Specialization</option>
+                      <option value="Emergency Medicine Specialists">Emergency Medicine Specialists</option> 
+                      <option value="Cardiologist">Cardiologist</option> 
+                      <option value="Dermatologists">Dermatologists</option>
+                      <option value="Allergists/Immunologists">Allergists/Immunologists</option>
+                      <option value="Anesthesiologists">Anesthesiologists</option>
+                      <option value="Colon and Rectal Surgeons">Colon and Rectal Surgeons</option>
+                    </select>
+                  </div>
+               
               </div>
 
             </div>
             <div class="col-md-6">
+             
               <div class="form-group">
-                {% render_field userForm.last_name class="form-control" placeholder="Last Name" %}
+                <input type="text" class="form-control" id="lastname" name="lastname" value="" placeholder="LastName">
               </div>
+            
               <div class="form-group">
-                {% render_field userForm.password class="form-control" placeholder="Password" %}
+                <input type="text" class="form-control" id="password" name="password" value="" placeholder="Password">
               </div>
-              <!-- <div class="form-group">
-                {% render_field doctorForm.mobile class="form-control"  placeholder="Mobile" %}
-              </div> -->
-              <!-- <div class="form-group">
-                {% render_field doctorForm.profile_pic required="required" class="form-control" placeholder="Profile Picture" %}
-              </div> -->
-
+              
               <div class="form-group">
-                {% render_field profileForm.sex class="form-control" placeholder="Sex" %}
+                <input type="text" class="form-control" id="sex" name="sex" value="" placeholder="Sex">
               </div>
+            
               <div class="form-group">
-                {% render_field profileForm.age class="form-control" placeholder="Age" %}
+                <input type="text" class="form-control" id="age" name="age" value="" placeholder="Age">
               </div>
+              
               <div class="form-group">
-                {% render_field profileForm.Bname class="form-control" placeholder="Building Name" %}
+                <input type="text" class="form-control" id="buildingname" name="buildingname" value="" placeholder="buildingname">
               </div>
+            
               <div class="form-group">
-                {% render_field profileForm.Sname class="form-control" placeholder="SName" %}
+                <input type="text" class="form-control" id="SName" name="Sname" value="" placeholder="Sname">
               </div>
+             
               <div class="form-group">
-                {% render_field profileForm.city class="form-control" placeholder="City" %}
+                <input type="text" class="form-control" id="city" name="city" value="" placeholder="CIty">
               </div>
+             
               <div class="form-group">
-                {% render_field profileForm.pincode class="form-control" placeholder="Pincode" %}
+                <input type="text" class="form-control" id="pincode" name="pincode" value="" placeholder="Pincode">
               </div>
+              
 
             </div>
           </div>
