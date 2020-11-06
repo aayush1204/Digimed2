@@ -118,9 +118,9 @@ class Description(models.Model):
     # pid = models.ForeignKey(Patient, on_delete = models.CASCADE )
     rid = models.ForeignKey(Records,on_delete = models.CASCADE)
 
-# class AttendsTO(models.Model):
-    # pid = models.ForeignKey(Patient, on_delete = models.CASCADE )
-    # did = models.ForeignKey(Doctor, on_delete = models.CASCADE )
+class AttendsTO(models.Model):
+    pid = models.ForeignKey(Patient, on_delete = models.CASCADE )
+    did = models.ForeignKey(Doctor, on_delete = models.CASCADE )
 
 # from django.db import models
 # from django.contrib.auth.models import AbstractUser
