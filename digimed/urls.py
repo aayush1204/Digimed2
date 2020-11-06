@@ -22,11 +22,17 @@ from django.contrib.auth.views import LoginView,LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home_view,name=''),
+    path('doctorclick', views.doctorclick_view),
     path('doctorsignup', views.doctor_signup_view,name='doctorsignup'),
     path('doctorregister', views.doctor_signup_view,name='doctorregister'),
     path('doctorlogin', LoginView.as_view(template_name='hospital/doctorlogin.html')),
     path('doctor-dashboard', views.doctor_dashboard_view,name='doctor-dashboard'),
-    path('doctorclick', views.doctorclick_view),
     path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
+
+    path('patientclick', views.patientclick_view),
+    path('patientsignup', views.patient_signup_view),
+    path('patientregister', views.patient_signup_view,name='patientregister'),
+    path('patientlogin', LoginView.as_view(template_name='hospital/patientlogin.html')),
+    path('patient-dashboard', views.patient_dashboard_view,name='patient-dashboard'),
 
 ]

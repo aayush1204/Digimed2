@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load widget_tweaks %}
+
 <html lang="en" dir="ltr">
 
 <head>
@@ -58,7 +58,7 @@
   <br><br>
 
   <!--- login page for patient by admin(sumit)  ---------->
-  <form method="post">
+  <form action="patient-dashboard" class="bg-white p-5 contact-form" method="post" novalidate="novalidate">
     {% csrf_token %}
     <div class="container register-form">
       <div class="form">
@@ -71,14 +71,15 @@
             <div class="col-md-6">
 
               <div class="form-group">
-                {% render_field form.username class="form-control" placeholder="Username" %}
+                <input type="text" class="form-control" id="username" name="username" value="" placeholder="User Name">
+  
               </div>
 
             </div>
             <div class="col-md-6">
 
               <div class="form-group">
-                {% render_field form.password class="form-control" placeholder="Password" %}
+                <input type="text" class="form-control" id="password" name="password" value="" placeholder="Password">
               </div>
 
             </div>

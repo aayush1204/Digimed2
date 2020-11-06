@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render,redirect,reverse
 from . import models
-from .models import Doctor,Patient,Receptionist, Profile, Appointment
+from .models import Doctor,Patient,Receptionist, Profile, Appointment, PhoneNumber
 from django.db.models import Sum
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
@@ -73,3 +73,54 @@ def doctor_dashboard_view(request):
     'doctor':Doctor.objects.filter(doctorId=request.user.id), #for profile picture of doctor in sidebar
     }
     return render(request,'hospital/doctor_dashboard.html',context=mydict)
+
+def patientclick_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('afterlogin')
+    return render(request,'hospital/patientclick.html')
+
+def patient_signup_view(request):
+    
+    if (request.method == "POST"):
+        first_name=request.POST['firstname']
+        last_name=request.POST['lastname']
+        # email=request.POST['email']
+        username=request.POST['username']
+        password=request.POST['password']
+        # confirm_password=request.POST['confirm_password']
+
+        phone=request.POST['phonenumber']
+        sex = request.POST['sex']
+        age =  request.POST['age']
+        buildingname =  request.POST['buildingname']
+        sname = request.POST['Sname']
+        city =  request.POST['city']
+        zipcode = request.POST['pincode']
+
+        user = User.objects.create_user(first_name=first_name, last_name=last_name,username=username,password=password)
+
+        user.save()
+        profile = Profile.objects.create(sex=sex,age=age,Bname=buildingname,Sname=sname,city=city,pincode=zipcode,user=user)
+        profile.save()
+        patient = Patient.objects.create(user=user,patientId=user.id)
+        patient.save()
+        phoneno = PhoneNumber.objects.create(phone=phone,user=user)
+        phoneno.save()
+        return HttpResponseRedirect('patientlogin')
+    return render(request,'hospital/patientsignup.html')
+
+def patient_dashboard_view(request):
+    patient=Patient.objects.filter(patientId=request.user.id)
+    # doctor=Appointment.objects.filter(patientId = patient.patientId)
+    # Doctor.objects.get(user_id=patient.assignedDoctorId)
+    mydict={
+    'patient':patient,
+    # 'doctorName':doctor.get_name,
+    # 'doctorMobile':doctor.mobile,
+    # 'doctorAddress':doctor.address,
+    'doctor':'doctor',
+    # 'symptoms':patient.symptoms,
+    # 'doctorDepartment':doctor.department,
+    # 'admitDate':patient.admitDate,
+    }
+    return render(request,'hospital/patient_dashboard.html',context=mydict)    
