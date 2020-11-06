@@ -94,11 +94,15 @@ def doctor_appointment_view(request):
 
 def doctor_view_appointment_view(request):
     doctor=Doctor.objects.filter(doctorId=request.user.id) #for profile picture of doctor in sidebar
-    appointments=Appointment.objects.all().filter(isCancelled=False,doctorId=request.user.id)
+    appointments=Appointment.objects.all().filter(doctorId__id=request.user.id)
+    print(appointments)
     patientid=[]
     for a in appointments:
-        patientid.append(a.patientId)
-    patients=models.Patient.objects.all().filter(patientStatus=True,patientId__in=patientid)
+        patientid.append(str(a.patientId))
+    # patients = models.Patient.objects.all().filter(patientStatus=True,patientId__in=patientid)
+
+    patients = models.AttendsTO.objects.all().filter(did__id=request.user.id, pid__patientStatus=True)
+    print(patients)
     appointments=zip(appointments,patients)
     return render(request,'hospital/doctor_view_appointment.html',{'appointments':appointments,'doctor':doctor})
 
@@ -167,6 +171,33 @@ def patient_dashboard_view(request):
     # 'admitDate':patient.admitDate,
     }
     return render(request,'hospital/patient_dashboard.html',context=mydict)  
+
+#### RECORDS ####
+def patient_records(request):
+    return render(request,'hospital/patient_records.html')
+
+def patient_view_records(request):
+    patient=Patient.objects.get(patientId=request.user.id)
+    print(request.user.id)
+    print(patient)
+    records=models.Records.objects.filter(pid=patient)
+    
+    # for i in records:
+    #     descriptionlist.append(models.Description.objects.filter(rid = i))
+    descriptionlist = models.Description.objects.all().filter(rid__in = models.Records.objects.all().filter(pid=patient))
+    # patients=models.Patient.objects.all().filter(user_id__in=patientid)
+    return render(request,'hospital/patient_view_records.html',{'patient':patient,'descriptionlist':descriptionlist})
+
+def patient_upload_records(request):
+    if request.method == 'GET':
+        uploadform = forms.UploadRecordForm()
+        return render(request,'hospital/patient_upload_records.html',{'uploadform':uploadform})
+    else:
+        uploadform = forms.UploadRecordForm(request.FILES)
+        descmodel = Description()
+        descmodel.recimage = uploadform.recimage
+        descmodel.save()
+        return render(request,'hospital/patient_upload_records.html',{'message':'Uploaded Successfully'})
 
 def adminclick_view(request):
     if request.user.is_authenticated:
