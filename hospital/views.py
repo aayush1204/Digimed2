@@ -55,6 +55,20 @@ def doctor_signup_view(request):
 def doctor_dashboard_view(request):
     #for three cards
     # patientcount=models.Patient.objects.all().filter(status=True,assignedDoctorId=request.user.id).count()
+    if(request.method=="POST"):
+
+        username=request.POST['username']
+        password=request.POST['password']
+
+        user =  auth.authenticate(username=username,password=password)
+        
+        try:
+            
+            auth.login(request, user)
+            return redirect('doctor-dashboard')
+        except:
+                # messages.info(request, "Incorrect Credentials. Please enter the correct ones!")
+            return render(request, 'doctorlogin.html')
     appointmentcount=Appointment.objects.all().filter(isCancelled=False,doctorId=request.user.id).count()
     # patientdischarged=models.PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
 
@@ -191,6 +205,20 @@ def admin_signup_view(request):
 
 def admin_dashboard_view(request):
     #for both table in admin dashboard
+    if(request.method=="POST"):
+
+        username=request.POST['username']
+        password=request.POST['password']
+
+        user =  auth.authenticate(username=username,password=password)
+        
+        try:
+            
+            auth.login(request, user)
+            return redirect('admin-dashboard')
+        except:
+                # messages.info(request, "Incorrect Credentials. Please enter the correct ones!")
+            return render(request, 'adminlogin.html')
     doctors=models.Doctor.objects.all().order_by('-id')
     patients=models.Patient.objects.all().order_by('-id')
     #for three cards
