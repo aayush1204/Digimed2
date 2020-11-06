@@ -123,4 +123,64 @@ def patient_dashboard_view(request):
     # 'doctorDepartment':doctor.department,
     # 'admitDate':patient.admitDate,
     }
-    return render(request,'hospital/patient_dashboard.html',context=mydict)    
+    return render(request,'hospital/patient_dashboard.html',context=mydict)  
+
+def adminclick_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('afterlogin')
+    return render(request,'hospital/adminclick.html')
+
+def admin_signup_view(request):
+    # form=forms.AdminSigupForm()
+    # if request.method=='POST':
+    #     form=forms.AdminSigupForm(request.POST)
+    #     if form.is_valid():
+    #         user=form.save()
+    #         user.set_password(user.password)
+    #         user.save()
+
+    #         Receptionist.objects.create(user = user, receptionistid=user.id, clinicname=form.clinicname, jobstatus=form.jobstatus)
+
+    #         my_admin_group = Group.objects.get_or_create(name='ADMIN')
+    #         my_admin_group[0].user_set.add(user)
+    #         return HttpResponseRedirect('adminlogin')
+    if(request.method=="POST" ):    
+        first_name=request.POST['firstname']
+        last_name=request.POST['lastname']
+        # email=request.POST['email']
+        username=request.POST['username']
+        password=request.POST['password']
+        clinicname = request.POST['clinicname']
+        user = User.objects.create_user(first_name=first_name, last_name=last_name,username=username,password=password)
+
+        user.save()
+
+        reception = Receptionist.objects.create(user=user,receptionistid=user.id,clinicname=clinicname,jobstatus='P')
+        reception.save()
+        return HttpResponseRedirect('adminlogin')
+    return render(request,'hospital/adminsignup.html')
+
+def admin_dashboard_view(request):
+    #for both table in admin dashboard
+    doctors=models.Doctor.objects.all().order_by('-id')
+    patients=models.Patient.objects.all().order_by('-id')
+    #for three cards
+    doctorcount=models.Doctor.objects.all().count()
+    pendingdoctorcount=models.Doctor.objects.all().count()
+
+    patientcount=models.Patient.objects.all().count()
+    pendingpatientcount=models.Patient.objects.all().count()
+
+    appointmentcount=models.Appointment.objects.all().count()
+    pendingappointmentcount=models.Appointment.objects.all().count()
+    mydict={
+    'doctors':doctors,
+    'patients':patients,
+    'doctorcount':doctorcount,
+    'pendingdoctorcount':pendingdoctorcount,
+    'patientcount':patientcount,
+    'pendingpatientcount':pendingpatientcount,
+    'appointmentcount':appointmentcount,
+    'pendingappointmentcount':pendingappointmentcount,
+    }
+    return render(request,'hospital/admin_dashboard.html',context=mydict)
