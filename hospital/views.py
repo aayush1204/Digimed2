@@ -96,20 +96,24 @@ def doctor_view_appointment_view(request):
     doctor=Doctor.objects.filter(doctorId=request.user.id) #for profile picture of doctor in sidebar
     appointments=Appointment.objects.all().filter(doctorId__doctorId=request.user.id)
     print(appointments)
+    phoneno=[]
     patientid=[]
     for a in appointments:
         patientid.append(str(a.patientId))
-    # patients = models.Patient.objects.all().filter(patientStatus=True,patientId__in=patientid)
-
-    patients = models.AttendsTO.objects.all().filter(did__doctorId=request.user.id, pid__patientStatus=True)
-    phoneno=[]
-    for i in patients:
-        temp = models.PhoneNumber.objects.all().get(user__id=i.pid.patientId)
+        temp = models.PhoneNumber.objects.all().get(user__id=a.patientId.user.id)
         print(temp.phone)
         phoneno.append(temp.phone)
-    print(patients)
+    # patients = models.Patient.objects.all().filter(patientStatus=True,patientId__in=patientid)
+
+    # patients = models.AttendsTO.objects.all().filter(did__doctorId=request.user.id, pid__patientStatus=True)
     
-    appointments=zip(appointments,patients,phoneno)
+    # for i in patients:
+    #     temp = models.PhoneNumber.objects.all().get(user__id=i.pid.patientId)
+    #     print(temp.phone)
+    #     phoneno.append(temp.phone)
+    # print(patients)
+    
+    appointments=zip(appointments,phoneno)
     return render(request,'hospital/doctor_view_appointment.html',{'appointments':appointments,'doctor':doctor})
 
 def patientclick_view(request):

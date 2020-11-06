@@ -41,13 +41,13 @@ facebook : fb.com/sumit.luv
           <th>Appointment Date</th>
         </tr>
       </thead>
-      {% for a,p, phone in appointments %}
+      {% for a, phone in appointments %}
       <tr>
         <td>{{a.patientId.user.first_name}} {{a.patientId.user.last_name}}</td>
         <td> <img src="{% static p.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
         <td>{{phone}}</td>
-        <td>{{p.pid.user.profile.age}}</td>
-        <td>{{p.pid.user.profile.Bname}}</td>
+        <td>{{a.patientId.user.profile.age}}</td>
+        <td>{{a.patientId.user.profile.Bname}}</td>
         <td>{{a.date}}</td>
       </tr>
       {% endfor %}
