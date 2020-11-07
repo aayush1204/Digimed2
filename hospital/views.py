@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render,redirect,reverse
-from . import models
-from .models import Doctor,Patient,Receptionist, Profile, Appointment, PhoneNumber, Symptoms, Prescription, MedicalTest, MedicinesPrescribed, PrescribedIn
+from . import models, forms
+from .models import Doctor,Patient,Receptionist, AttendsTO, Profile, Appointment, PhoneNumber, Symptoms, Prescription, MedicalTest, MedicinesPrescribed, PrescribedIn
 from django.db.models import Sum
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
@@ -217,7 +217,33 @@ def doctor_prescription_add_medicines(request, p):
     return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk, 'medicaltest':medicaltest
                                                                     ,'medicines':medicines})    
 
+def doctor_view_records(request):
+    doctor = Doctor.objects.get(doctorId=request.user.id)
 
+    data = AttendsTO.objects.filter(did=doctor)
+
+    return render(request, 'hospital/doctor_view_records.html',{'data':data})
+
+def doctor_view_records_single(request,a):
+    doctor = Doctor.objects.get(doctorId=request.user.id)
+
+    data = AttendsTO.objects.filter(did=doctor)
+    if request.method == 'POST':
+        desc = models.Description.objects.get(id = request.POST['clicked'])
+        return render(request,'hospital/patient_view_records2.html',{'desc':desc})
+    else:
+        patient=Patient.objects.get(patientId=a)
+        # print(request.user.id)
+        print(patient)
+        records=models.Records.objects.filter(pid=patient)
+
+        # for i in records:
+        #     descriptionlist.append(models.Description.objects.filter(rid = i))
+        descriptionlist = models.Description.objects.all().filter(rid__in = models.Records.objects.all().filter(pid=patient))
+        # patients=models.Patient.objects.all().filter(user_id__in=patientid)
+        return render(request,'hospital/doctor_view_records_single.html',{'patient':patient,'descriptionlist':descriptionlist})
+
+    return render(requet, 'doctor_view_records.html',{'data':data})
 def patientclick_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
@@ -329,7 +355,7 @@ def patient_upload_records(request):
             print('failed')
             # uploadform.rid = recordmodel
         descmodel.save()
-        return render(request,'hospital/patient_upload_records.html',{'message':'Uploaded Successfully'})
+        return render(request,'hospital/patient_records.html.html',{'message':'Uploaded Successfully'})
 
 def adminclick_view(request):
     if request.user.is_authenticated:
