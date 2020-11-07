@@ -8,4 +8,3 @@ admin.site.register(Description)
 admin.site.register(Doctor)
 admin.site.register(Prescription)
 admin.site.register(PrescribedIn)
-

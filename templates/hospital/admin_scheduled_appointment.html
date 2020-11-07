@@ -1,12 +1,10 @@
 {% extends 'hospital/admin_base.html' %}
 {% block content %}
-{%load static%}
 
 <head>
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
   <style media="screen">
     a:link {
       text-decoration: none;
@@ -28,35 +26,31 @@ facebook : fb.com/sumit.luv
 <div class="container">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h6 class="panel-title">Doctor List</h6>
+      <h6 class="panel-title">Appointment Requests</h6>
     </div>
     <table class="table table-hover" id="dev-table">
       <thead>
         <tr>
-
-          <th>Name</th>
-          <th>Specialization</th>
-
-          <th>Address</th>
-          <th>Department</th>
-          <th>Update</th>
-          <th>Delete</th>
+          <th>Doctor Name</th>
+          <th>Patient Name</th>
+          <th>Date</th>
+          <th>Timing</th>
+          
         </tr>
       </thead>
-      {% for d in doctor %}
+      {% for a in appointment %}
       <tr>
+        <td> {{a.doctorId.user.first_name}}</td>
+        <td>{{a.patientId.user.first_name}}</td>
+        <td>{{a.date}}</td>
+        <td>{{a.timing}}</td>
 
-        <td> {{d.user.first_name}} {{d.user.last_name}}</td>
-
-        <td>{{d.specialization}}</td>
-        <td>{{d.user.profile.Bname}}, {{d.user.profile.Sname}}, {{d.user.profile.city}}, {{d.user.profile.pincode}}</td>
-        <td>{{d.department}}</td>
-        <td><a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-edit"></span></a></td>
-        <td><a class="btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></a></td>
       </tr>
       {% endfor %}
     </table>
   </div>
+
+
 </div>
 <!--
 developed By : sumit kumar

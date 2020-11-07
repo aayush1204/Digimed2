@@ -49,6 +49,10 @@ class Receptionist(models.Model):
     clinicname = models.CharField(max_length = 20,null =  True)
     jobstatus = models.CharField(max_length = 1)
 
+    @property
+    def get_id(self):
+        return self.user.id
+
 
 class Appointment(models.Model):
     appointmentId = models.AutoField(primary_key= True)
@@ -59,13 +63,11 @@ class Appointment(models.Model):
     timing=models.DateTimeField(default=datetime.now)
     isCancelled=models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
-    reasonOfDisapproval = models.CharField(max_length=250,null = True)
+    reasonOfDisapproval = models.CharField(max_length=250)
     #appointmentDate=models.DateField(auto_now=True)
     #description=models.TextField(max_length=500)
     status=models.BooleanField(default=False)
-    is_disapproved = models.BooleanField(default=False)    #appointmentDate=models.DateField(auto_now=True)
-    #description=models.TextField(max_length=500)
-    #status=models.BooleanField(default=False)
+    is_disapproved = models.BooleanField(default=False)
 
 
 #Developed By : sumit kumar

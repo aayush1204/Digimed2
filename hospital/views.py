@@ -530,7 +530,7 @@ def patient_prescription_view(request, p):
     print(p)
     a = Appointment.objects.filter(appointmentId=p).first()
     print(a)
-    
+
     x = PrescribedIn.objects.filter(aid=a).first()
     print(x)
     pk = x.prescriptionid.prescriptionid
@@ -615,3 +615,61 @@ def admin_dashboard_view(request):
     'pendingappointmentcount':pendingappointmentcount,
     }
     return render(request,'hospital/admin_dashboard.html',context=mydict)
+
+def admin_appointment(request):
+    #print(receptionistid__receptionistid)
+    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False)
+    #print(appointment)
+    return render(request,'hospital/admin_approve_appointment.html', {'appointment':appointment})
+
+def admin_patient(request):
+    rid = Receptionist.objects.get(receptionistid = request.user.id )
+    clinic = rid.clinicname
+    doctor = Doctor.objects.filter(clinicname = clinic)
+    ls = []
+    for i in doctor:
+        patient = AttendsTO.objects.filter(did = i)
+        for j in patient:
+            ls.append(j)
+    print(ls)
+    test=[]
+    phoneno=[]
+    for i in patient:
+         temp = PhoneNumber.objects.all().filter(user__id = i.pid.user.id)
+         for i in temp:
+             test.append(i.phone)
+         phoneno.append(test)
+    patient = zip(ls,phoneno)
+
+    return render(request, 'hospital/admin_view_patient.html', {'patient':patient})
+
+def admin_doctor(request):
+    rid = Receptionist.objects.get(receptionistid = request.user.id )
+    clinic = rid.clinicname
+    doctor = Doctor.objects.filter(clinicname = clinic)
+
+    return render(request, 'hospital/admin_view_doctor.html', {'doctor':doctor})
+
+def admin_scheduled_appointment(request):
+    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=True)
+    return render(request,'hospital/admin_scheduled_appointment.html', {'appointment':appointment})
+def approve(request, pk):
+
+    appointment1 = Appointment.objects.get(appointmentId = pk)
+    appointment1.is_approved = True
+    appointment1.save()
+    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False, is_disapproved = False)
+
+    return render(request,'hospital/admin_approve_appointment.html', {'appointment':appointment})
+
+def disapprove(request, pk):
+    appointment1 = Appointment.objects.get(appointmentId = pk)
+    appointment1.reasonOfDisapproval = request.POST['reasonOfDisapproval']
+    appointment1.is_disapproved = True
+    appointment1.save()
+
+    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False, is_disapproved = False)
+
+    return render(request,'hospital/admin_approve_appointment.html', {'appointment':appointment})
+
+    #return render(request,'hospital/aboutsus.html')
