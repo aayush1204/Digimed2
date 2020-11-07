@@ -149,13 +149,15 @@ facebook : fb.com/sumit.luv
                     <td>{{i.symptoms}}</td>
                     <td></td>
                     <td></td>
+                    <td><button type='button'class="btn btn-fill btn-danger" style="margin-left: 15px" onclick=" location.href='{% url "doctor-delete-symptom" p=pk a=i.id %}' " >Delete</button></td>
+                    
                   </tr>
                  {%endfor%}
                  <thead>
                     <tr>
                         <th></th>
                       <th>Medical Tests</th>
-                      
+                      <td></td>
                       <td></td>
                     </tr>
                   </thead>
@@ -164,6 +166,8 @@ facebook : fb.com/sumit.luv
                     <td>{{i.medicaltest}}</td>
                     <td></td>
                     <td></td>
+                    <td><button type='button'class="btn btn-fill btn-danger" style="margin-left: 15px" onclick=" location.href='{% url "doctor-delete-medicaltest" p=pk a=i.id %}' " >Delete</button></td>
+                    
                     
                   </tr>
                  {%endfor%}
@@ -174,11 +178,13 @@ facebook : fb.com/sumit.luv
                       <th>Medicines</th>
                       
                       <td></td>
+                      <td></td>
                       
                     </tr>
                     <tr><th>Medicine Name</th>
                         <th>Medicine Dosage</th>
                         <th>Medicine Duration</th>
+                        <th></th>
                     </tr>
                   </thead>
                   {%for i in medicines %}
@@ -186,6 +192,7 @@ facebook : fb.com/sumit.luv
                     <td>{{i.mname}}</td>
                     <td>{{i.mdosage}}</td>
                     <td>{{i.mduration}}</td>
+                    <td><button type='button'class="btn btn-fill btn-danger" style="margin-left: 15px" onclick=" location.href='{% url "doctor-delete-medicines" p=pk a=i.id %}' " >Delete</button></td>
                     
                   </tr>
                  {%endfor%}

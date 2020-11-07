@@ -189,6 +189,25 @@ def doctor_prescription_add_symptom(request, p):
     return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
                                                                         ,'medicines':medicines})    
 
+def doctor_prescription_delete_symptom(request, p, a):
+
+    print(p)
+    print(a)
+    test = Symptoms.objects.get(id=a)
+    print(test)
+    test.delete()
+      
+    pers = Prescription.objects.filter(prescriptionid=p).first()    
+    symptom=Symptoms.objects.filter(prescriptionid=pers)
+    medicaltest=MedicalTest.objects.filter(prescriptionid=pers)
+    medicines = MedicinesPrescribed.objects.filter(prescriptionid=pers)
+    pk = p
+    return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
+                                                                        ,'medicines':medicines})    
+      
+       
+
+
 def doctor_prescription_add_medicaltest(request, p):
     if request.method=="POST":
         medicaltest = request.POST['medicaltest']
@@ -202,7 +221,26 @@ def doctor_prescription_add_medicaltest(request, p):
     medicines = MedicinesPrescribed.objects.filter(prescriptionid=pers)
     pk = p
     return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk, 'medicaltest':medicaltest
+                                                                        ,'medicines':medicines})   
+
+def doctor_prescription_delete_medicaltest(request, p, a):
+
+    print(p)
+    print(a)
+    test = MedicalTest.objects.get(id=a)
+    print(test)
+    test.delete()
+      
+    pers = Prescription.objects.filter(prescriptionid=p).first()    
+    symptom=Symptoms.objects.filter(prescriptionid=pers)
+    medicaltest=MedicalTest.objects.filter(prescriptionid=pers)
+    medicines = MedicinesPrescribed.objects.filter(prescriptionid=pers)
+    pk = p
+    return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
                                                                         ,'medicines':medicines})    
+
+
+      
 
 def doctor_prescription_add_medicines(request, p):
     if request.method=="POST":
@@ -220,6 +258,22 @@ def doctor_prescription_add_medicines(request, p):
     pk = p
     return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk, 'medicaltest':medicaltest
                                                                     ,'medicines':medicines})    
+
+def doctor_prescription_delete_medicines(request, p, a):
+
+    print(p)
+    print(a)
+    test = MedicinesPrescribed.objects.get(id=a)
+    print(test)
+    test.delete()
+      
+    pers = Prescription.objects.filter(prescriptionid=p).first()    
+    symptom=Symptoms.objects.filter(prescriptionid=pers)
+    medicaltest=MedicalTest.objects.filter(prescriptionid=pers)
+    medicines = MedicinesPrescribed.objects.filter(prescriptionid=pers)
+    pk = p
+    return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
+                                                                        ,'medicines':medicines})    
 
 def doctor_view_records(request):
     doctor = Doctor.objects.get(doctorId=request.user.id)
