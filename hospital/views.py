@@ -244,6 +244,50 @@ def doctor_view_records_single(request,a):
         return render(request,'hospital/doctor_view_records_single.html',{'patient':patient,'descriptionlist':descriptionlist})
 
     return render(requet, 'doctor_view_records.html',{'data':data})
+
+def doctor_patient_view(request):
+    mydict={
+    'doctor':models.Doctor.objects.get(user_id=request.user.id), #for profile picture of doctor in sidebar
+    }
+    return render(request,'hospital/doctor_patient.html',context=mydict)
+
+
+def doctor_view_patient_view(request):
+    patients=AttendsTO.objects.all().filter(pid__patientStatus=True,did__doctorId=request.user.id)
+    doctor=Doctor.objects.get(doctorId=request.user.id) #for profile picture of doctor in sidebar
+    phoneno=[]
+    test=[]
+   
+    for a in patients:
+        # patientid.append(str(a.patientId))
+        temp = models.PhoneNumber.objects.all().filter(user__id=a.pid.user.id)
+        for i in temp:
+            test.append(i.phone)
+        # print(temp.phone)
+        phoneno.append(test)
+        test=[]
+    patient = zip(patients,phoneno)    
+    return render(request,'hospital/doctor_view_patient.html',{'patients':patient,'doctor':doctor})
+
+def doctor_view_discharge_patient_view(request):
+    patients=AttendsTO.objects.all().filter(pid__patientStatus=False,did__doctorId=request.user.id)
+    doctor=Doctor.objects.get(doctorId=request.user.id) #for profile picture of doctor in sidebar
+    phoneno=[]
+    test=[]
+   
+    for a in patients:
+        # patientid.append(str(a.patientId))
+        temp = models.PhoneNumber.objects.all().filter(user__id=a.pid.user.id)
+        for i in temp:
+            test.append(i.phone)
+        # print(temp.phone)
+        phoneno.append(test)
+        test=[]
+    patient = zip(patients,phoneno)    
+    return render(request,'hospital/doctor_view_patient_discharge.html',{'patients':patient,'doctor':doctor})
+
+
+
 def patientclick_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')

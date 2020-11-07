@@ -40,6 +40,11 @@ urlpatterns = [
     # path('doctor-delete-appointment',views.doctor_delete_appointment_view,name='doctor-delete-appointment'),
     # path('delete-appointment/<slug:pk>', views.delete_appointment_view,name='delete-appointment'),
     path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
+    path('doctor-patient', views.doctor_patient_view,name='doctor-patient'),
+    path('doctor-view-patient', views.doctor_view_patient_view,name='doctor-view-patient'),
+    path('doctor-view-discharge-patient',views.doctor_view_discharge_patient_view,name='doctor-view-discharge-patient'),
+
+
 
     path('patientclick', views.patientclick_view),
     path('patientsignup', views.patient_signup_view),
