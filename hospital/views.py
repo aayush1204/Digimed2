@@ -100,12 +100,16 @@ def doctor_view_appointment_view(request):
     print(appointments)
     phoneno=[]
     prescriptionid=[]
+    test=[]
     # patientid=[]
     for a in appointments:
         # patientid.append(str(a.patientId))
-        temp = models.PhoneNumber.objects.all().get(user__id=a.patientId.user.id)
-        print(temp.phone)
-        phoneno.append(temp.phone)
+        temp = models.PhoneNumber.objects.all().filter(user__id=a.patientId.user.id)
+        # print(temp.phone)
+        for i in temp:
+            test.append(i.phone)
+        phoneno.append(test)
+        test=[]
     # patients = models.Patient.objects.all().filter(patientStatus=True,patientId__in=patientid)
 
     # patients = models.AttendsTO.objects.all().filter(did__doctorId=request.user.id, pid__patientStatus=True)

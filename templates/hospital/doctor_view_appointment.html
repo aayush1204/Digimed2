@@ -46,7 +46,9 @@ facebook : fb.com/sumit.luv
         <td>{{a.patientId.user.first_name}} {{a.patientId.user.last_name}}</td>
         <td> <button type='button'class="btn btn-fill btn-primary" style="margin-left: 15px" onclick=" location.href='{% url "doctor-prescription-add" p=a.appointmentId %}' " >Add Prescription</button></td>
        
-        <td>{{phone}}</td>
+        <td>{%for x in phone %}
+          {{x}},
+          {%endfor%}</td>
         <td>{{a.patientId.user.profile.age}}</td>
         <td>{{a.patientId.user.profile.Bname}}</td>
         <td>{{a.date}}</td>
