@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import Appointment, AttendsTO, Receptionist, Doctor, Patient
+from .models import Appointment,PrescribedIn,Prescription, AttendsTO, Description, Records, Doctor
 # Register your models here.
 admin.site.register(Appointment)
 admin.site.register(AttendsTO)
-admin.site.register(Receptionist)
+admin.site.register(Records)
+admin.site.register(Description)
 admin.site.register(Doctor)
-admin.site.register(Patient)
+admin.site.register(Prescription)
+admin.site.register(PrescribedIn)

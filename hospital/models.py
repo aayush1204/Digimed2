@@ -20,17 +20,11 @@ class Doctor(models.Model):
     doctorId = models.IntegerField(default = 0)
     clinicname = models.CharField(max_length = 30,null = True)
     specialization = models.CharField(max_length = 30,choices = departments,null = True)
-
-
-    #profile_pic= models.ImageField(upload_to='profile_pic/DoctorProfilePic/',null=True,blank=True)
-
-    #status=models.BooleanField(default=False)
-
     @property
     def get_id(self):
-        return self.user.id
+        return self.id
     def __str__(self):
-        return "{} ({})".format(self.user.first_name,self.specialization)
+        return "{} {} ({})".format(self.user.first_name,self.user.last_name,self.specialization)
 
 
 
@@ -98,7 +92,7 @@ class Appointment(models.Model):
 
 
 class Prescription(models.Model):
-    prescriptionid = models.AutoField(primary_key=True,default = 0)
+    prescriptionid = models.AutoField(primary_key=True)
 
 class MedicinesPrescribed(models.Model):
     prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE )
@@ -121,7 +115,7 @@ class Records(models.Model):
 class Description(models.Model):
     type = models.CharField(max_length=50,choices=types,default='Xray')
     title = models.CharField(max_length = 30)
-    recimage=models.FileField(upload_to='records/', null=True, verbose_name="")
+    recimage=models.ImageField(upload_to='records/', null=True, verbose_name="")
     # pid = models.ForeignKey(Patient, on_delete = models.CASCADE )
     rid = models.ForeignKey(Records,on_delete = models.CASCADE)
 

@@ -1,7 +1,6 @@
 {% extends 'hospital/doctor_base.html' %}
 {% block content %}
-{%load static%}
-
+{% load static %}
 <head>
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -28,29 +27,37 @@ facebook : fb.com/sumit.luv
 <div class="container">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h6 class="panel-title">Delete Your Appointments</h6>
+      <h6 class="panel-title">Patients Records</h6>
     </div>
     <table class="table table-hover" id="dev-table">
       <thead>
         <tr>
-          <th>Patient Name</th>
-          <th>Picture</th>
-          <th>Age</th>
-          <th>Delete</th>
+          <th>Record ID</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th></th>
         </tr>
       </thead>
-      {% for a in appointments %}
+      {% for a in descriptionlist %}
       <tr>
-        <td>{{a.patientId.user.first_name}}</td>
-        <td></td>
-        <!-- <td> <img src="{% static a.patientId.user.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td> -->
-        <td>{{a.patientId.user.profile.age}}</td>
-        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-appointment' p=a.appointmentId %}"><span class="glyphicon glyphicon-trash"></span></a></td>
-      </tr>
+        <td> {{a.rid.rid}}</td>
+        <td> {{a.type}} </td>
+        <td> {{a.title}} </td>
+        <td> <img src={{a.recimage}}></img></td>
+
+        <td> <form action="" method="post">
+                   {% csrf_token %}
+            <button name="clicked" value="{{a.id}}">  View </button>
+          </form></td>
+
       {% endfor %}
     </table>
-  </div>
+    </div>
 </div>
+
+<!-- <img src="{{ desc.recimage.url }}" width="300" height="200"> </img> -->
+
 <!--
 developed By : sumit kumar
 facebook : fb.com/sumit.luv

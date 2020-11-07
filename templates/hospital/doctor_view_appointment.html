@@ -34,7 +34,7 @@ facebook : fb.com/sumit.luv
       <thead>
         <tr>
           <th>Patient Name</th>
-          <th>Picture</th>
+          <th>Link</th>
           <th>PhoneNo</th>
           <th>Age</th>
           <th>Address</th>
@@ -44,8 +44,11 @@ facebook : fb.com/sumit.luv
       {% for a, phone in appointments %}
       <tr>
         <td>{{a.patientId.user.first_name}} {{a.patientId.user.last_name}}</td>
-        <td> <img src="{% static p.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
-        <td>{{phone}}</td>
+        <td> <button type='button'class="btn btn-fill btn-primary" style="margin-left: 15px" onclick=" location.href='{% url "doctor-prescription-add" p=a.appointmentId %}' " >Add Prescription</button></td>
+       
+        <td>{%for x in phone %}
+          {{x}},
+          {%endfor%}</td>
         <td>{{a.patientId.user.profile.age}}</td>
         <td>{{a.patientId.user.profile.Bname}}</td>
         <td>{{a.date}}</td>

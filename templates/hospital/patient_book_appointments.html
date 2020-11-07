@@ -93,11 +93,11 @@
           <!-- <a href="/patient-upload-records"> -->
           <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
-            <h6 class="m-b-20">Upload Records<br><br>{{uploadform.as_p}}</h6>
-            <button type="submit">Upload</button>
+            <h6 class="m-b-20">Book Appointments<br><br>{{add_appointment_form.as_p}}</h6>
+            <button type="submit">Book</button>
             </form>
           <!-- </a> -->
-
+          {{Message}}
           <br>
           <!-- <h2 class="text-right"><i class="fas fa-book-medical f-left"></i></h2> -->
         </div>
