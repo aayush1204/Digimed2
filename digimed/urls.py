@@ -54,6 +54,9 @@ urlpatterns = [
     path('patient-view-records', views.patient_view_records,name='patient-view-records'),
     path('patient-records', views.patient_records,name='patient-records'),
     path('patient-upload-records', views.patient_upload_records,name='patient-upload-records'),
+    path('patient-doctors', views.patient_doctors,name='patient-doctors'),
+    path('patient-view-doctors', views.patient_view_doctors,name='patient-view-doctors'),
+    path('patient-add-doctors', views.patient_add_doctors,name='patient-add-doctors'),
 
     path('adminclick', views.adminclick_view),
     path('adminsignup', views.admin_signup_view),

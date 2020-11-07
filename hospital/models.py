@@ -20,17 +20,11 @@ class Doctor(models.Model):
     doctorId = models.IntegerField(default = 0)
     clinicname = models.CharField(max_length = 30,null = True)
     specialization = models.CharField(max_length = 30,choices = departments,null = True)
-
-
-    #profile_pic= models.ImageField(upload_to='profile_pic/DoctorProfilePic/',null=True,blank=True)
-
-    #status=models.BooleanField(default=False)
-
     @property
     def get_id(self):
-        return self.user.id
+        return self.id
     def __str__(self):
-        return "{} ({})".format(self.user.first_name,self.specialization)
+        return "{} {} ({})".format(self.user.first_name,self.user.last_name,self.specialization)
 
 
 
