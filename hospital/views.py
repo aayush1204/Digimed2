@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render,redirect,reverse
 from . import models
-from .models import Doctor,Patient,Receptionist, Profile, Appointment, PhoneNumber
+from .models import Doctor,Patient,Receptionist, Profile, Appointment, PhoneNumber, Symptoms, Prescription, MedicalTest, MedicinesPrescribed, PrescribedIn
 from django.db.models import Sum
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
@@ -93,13 +93,16 @@ def doctor_appointment_view(request):
     return render(request,'hospital/doctor_appointment.html',{'doctor':doctor})
 
 def doctor_view_appointment_view(request):
-    doctor=Doctor.objects.filter(doctorId=request.user.id) #for profile picture of doctor in sidebar
-    appointments=Appointment.objects.all().filter(doctorId__doctorId=request.user.id)
+    doctor=Doctor.objects.filter(doctorId=request.user.id)
+    print(request.user.id)
+    print(doctor) #for profile picture of doctor in sidebar
+    appointments=Appointment.objects.all().filter(doctorId__user__id=request.user.id)
     print(appointments)
     phoneno=[]
-    patientid=[]
+    prescriptionid=[]
+    # patientid=[]
     for a in appointments:
-        patientid.append(str(a.patientId))
+        # patientid.append(str(a.patientId))
         temp = models.PhoneNumber.objects.all().get(user__id=a.patientId.user.id)
         print(temp.phone)
         phoneno.append(temp.phone)
@@ -115,6 +118,105 @@ def doctor_view_appointment_view(request):
     
     appointments=zip(appointments,phoneno)
     return render(request,'hospital/doctor_view_appointment.html',{'appointments':appointments,'doctor':doctor})
+
+def doctor_delete_appointment_view(request):
+    doctor=models.Doctor.objects.get(doctorId=request.user.id) #for profile picture of doctor in sidebar
+    appointments=models.Appointment.objects.all().filter(doctorId__doctorId=request.user.id)
+    # patientid=[]
+    # for a in appointments:
+        # patientid.append(a.patientId)
+    # patients=models.Patient.objects.all().filter(user_id__in=patientid)
+    print(appointments)
+    appointments=zip(appointments)
+    return render(request,'hospital/doctor_delete_appointment.html',{'appointments':appointments,'doctor':doctor})
+
+# def delete_appointment_view(request,pk):
+#     appointment=models.Appointment.objects.get(id=pk)
+#     appointment.delete()
+#     doctor=models.Doctor.objects.get(user_id=request.user.id) #for profile picture of doctor in sidebar
+#     appointments=models.Appointment.objects.all().filter(status=True,doctorId=request.user.id)
+#     patientid=[]
+#     for a in appointments:
+#         patientid.append(a.patientId)
+#     patients=models.Patient.objects.all().filter(status=True,user_id__in=patientid)
+#     appointments=zip(appointments,patients)
+#     return render(request,'hospital/doctor_delete_appointment.html',{'appointments':appointments,'doctor':doctor})    
+def doctor_prescription_add(request,p):
+    
+    print(p)
+    a = Appointment.objects.filter(appointmentId=p).first()
+    print(a)
+    x = PrescribedIn.objects.filter(aid=a)
+    
+    if not x.exists():
+        presobj = Prescription.objects.create()
+        presobj.save()
+
+        PrescribedIn.objects.create(aid=a,fees=0,prescriptionid=presobj)
+        pk = presobj.prescriptionid
+        symptom=Symptoms.objects.filter(prescriptionid=presobj)
+        medicaltest=MedicalTest.objects.filter(prescriptionid=presobj)
+        medicines = MedicinesPrescribed.objects.filter(prescriptionid=presobj)
+        return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
+                                                                        ,'medicines':medicines})
+
+    x = PrescribedIn.objects.filter(aid=a).first()
+    print(x)
+    pk = x.prescriptionid.prescriptionid
+    print(pk)
+    symptom=Symptoms.objects.filter(prescriptionid=x.prescriptionid)
+    medicaltest=MedicalTest.objects.filter(prescriptionid=x.prescriptionid)
+    medicines = MedicinesPrescribed.objects.filter(prescriptionid=x.prescriptionid)
+    return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
+                                                                        ,'medicines':medicines})
+
+def doctor_prescription_add_symptom(request, p):
+    if request.method=="POST":
+        symptom = request.POST['symptom']
+        pers = Prescription.objects.filter(prescriptionid=p).first()
+        Symptoms.objects.create(symptoms=symptom,prescriptionid = pers)
+        
+        print(p)
+    pers = Prescription.objects.filter(prescriptionid=p).first()    
+    symptom=Symptoms.objects.filter(prescriptionid=pers)
+    medicaltest=MedicalTest.objects.filter(prescriptionid=pers)
+    medicines = MedicinesPrescribed.objects.filter(prescriptionid=pers)
+    pk = p
+    return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
+                                                                        ,'medicines':medicines})    
+
+def doctor_prescription_add_medicaltest(request, p):
+    if request.method=="POST":
+        medicaltest = request.POST['medicaltest']
+        pers = Prescription.objects.filter(prescriptionid=p).first()
+        MedicalTest.objects.create(medicaltest=medicaltest,prescriptionid = pers)
+        
+        print(p)
+    pers = Prescription.objects.filter(prescriptionid=p).first()    
+    symptom=Symptoms.objects.filter(prescriptionid=pers)
+    medicaltest=MedicalTest.objects.filter(prescriptionid=pers)
+    medicines = MedicinesPrescribed.objects.filter(prescriptionid=pers)
+    pk = p
+    return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk, 'medicaltest':medicaltest
+                                                                        ,'medicines':medicines})    
+
+def doctor_prescription_add_medicines(request, p):
+    if request.method=="POST":
+        mname = request.POST['mname']
+        mdosage = request.POST['mdosage']
+        mduration = request.POST['mduration']
+        pers = Prescription.objects.filter(prescriptionid=p).first()
+        MedicinesPrescribed.objects.create(mname=mname,mdosage=mdosage,mduration=mduration,prescriptionid = pers)
+        
+        print(p)
+    pers = Prescription.objects.filter(prescriptionid=p).first()    
+    symptom=Symptoms.objects.filter(prescriptionid=pers)
+    medicaltest=MedicalTest.objects.filter(prescriptionid=pers)
+    medicines = MedicinesPrescribed.objects.filter(prescriptionid=pers)
+    pk = p
+    return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk, 'medicaltest':medicaltest
+                                                                    ,'medicines':medicines})    
+
 
 def patientclick_view(request):
     if request.user.is_authenticated:

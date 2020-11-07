@@ -91,7 +91,7 @@ class Appointment(models.Model):
 
 
 class Prescription(models.Model):
-    prescriptionid = models.AutoField(primary_key=True,default = 0)
+    prescriptionid = models.AutoField(primary_key=True)
 
 class MedicinesPrescribed(models.Model):
     prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE )

@@ -35,16 +35,17 @@ facebook : fb.com/sumit.luv
         <tr>
           <th>Patient Name</th>
           <th>Picture</th>
-          <th>Description</th>
+          <th>Age</th>
           <th>Delete</th>
         </tr>
       </thead>
-      {% for a,p in appointments %}
+      {% for a in appointments %}
       <tr>
-        <td>{{a.patientName}}</td>
-        <td> <img src="{% static p.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
-        <td>{{a.description}}</td>
-        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-appointment' a.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+        <td>{{a.patientId.user.first_name}}</td>
+        <td></td>
+        <!-- <td> <img src="{% static a.patientId.user.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td> -->
+        <td>{{a.patientId.user.profile.age}}</td>
+        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-appointment' p=a.appointmentId %}"><span class="glyphicon glyphicon-trash"></span></a></td>
       </tr>
       {% endfor %}
     </table>

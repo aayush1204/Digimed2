@@ -1,0 +1,72 @@
+{% extends 'hospital/doctor_base.html' %}
+{% block content %}
+{%load static%}
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+  </style>
+</head>
+<!--
+written By : sumit kumar
+facebook : fb.com/sumit.luv
+-->
+<div class="container">
+    <div class="row">
+        <form action="patient-dashboard" class="bg-white p-5 contact-form" method="post" novalidate="novalidate">
+            {% csrf_token %}
+            <div class="container register-form">
+              <div class="form">
+                <div class="note">
+                  <p>Add Symptom Page</p>
+                </div>
+        
+                <div class="form-content">
+                  <div class="row">
+                    <div class="col-md-6">
+        
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="username" name="username" value="" placeholder="User Name">
+          
+                      </div>
+        
+                    </div>
+                    <div class="col-md-6">
+        
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="password" name="password" value="" placeholder="Password">
+                      </div>
+        
+                    </div>
+                  </div>
+                  <button type="submit" class="btnSubmit">Login</button>
+                  <div class="text-center">Do not have account? <a href="patientsignup">Signup here</a></div>
+                </div>
+              </div>
+            </div>
+
+            </form>
+      </div>
+    
+</div>
+<!--
+developed By : sumit kumar
+facebook : fb.com/sumit.luv
+youtube : youtube.com/lazycoders
+-->
+
+{% endblock content %}

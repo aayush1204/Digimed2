@@ -29,6 +29,12 @@ urlpatterns = [
     path('doctor-dashboard', views.doctor_dashboard_view,name='doctor-dashboard'),
     path('doctor-appointment', views.doctor_appointment_view,name='doctor-appointment'),
     path('doctor-view-appointment', views.doctor_view_appointment_view,name='doctor-view-appointment'),
+    path('doctor-prescription-add/<slug:p>', views.doctor_prescription_add,name='doctor-prescription-add'),
+    path('doctor-add-symptom/<slug:p>', views.doctor_prescription_add_symptom,name='doctor-add-symptom'),
+    path('doctor-add-medicaltest/<slug:p>', views.doctor_prescription_add_medicaltest,name='doctor-add-medicaltest'),
+    path('doctor-add-medicines/<slug:p>', views.doctor_prescription_add_medicines,name='doctor-add-medicines'),
+    # path('doctor-delete-appointment',views.doctor_delete_appointment_view,name='doctor-delete-appointment'),
+    # path('delete-appointment/<slug:pk>', views.delete_appointment_view,name='delete-appointment'),
     path('logout', LogoutView.as_view(template_name='hospital/index.html'),name='logout'),
 
     path('patientclick', views.patientclick_view),
