@@ -61,6 +61,7 @@ urlpatterns = [
     path('patient-view-doctors', views.patient_view_doctors,name='patient-view-doctors'),
     path('patient-add-doctors', views.patient_add_doctors,name='patient-add-doctors'),
 
+    path('patient-appointment-cancel/<slug:p>', views.patient_appointments_cancel,name='patient-appointment-cancel'),
     path('patient-prescription-view/<slug:p>', views.patient_prescription_view,name='patient-prescription-view'),
     path('patient-appointment', views.patient_appointments,name='patient-appointment'),
     path('patient-view-appointments', views.patient_view_appointments,name='patient-view-appointments'),

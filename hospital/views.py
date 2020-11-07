@@ -412,6 +412,17 @@ def patient_dashboard_view(request):
     }
     return render(request,'hospital/patient_dashboard.html',context=mydict)
 
+def patient_appointments_cancel(request,p):
+
+    a = Appointment.objects.get(appointmentId=p)
+    a.isCancelled=True
+    a.save()
+    
+    patient=Patient.objects.get(patientId=request.user.id)
+    appointments = models.Appointment.objects.filter(patientId = patient)
+    return render(request,'hospital/patient_view_appointments.html',{'patient':patient,'appointments':appointments})
+
+
 #### RECORDS ####
 def patient_records(request):
     return render(request,'hospital/patient_records.html')
