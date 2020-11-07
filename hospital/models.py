@@ -63,7 +63,7 @@ class Appointment(models.Model):
     timing=models.DateTimeField(default=datetime.now)
     isCancelled=models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
-    reasonOfDisapproval = models.CharField(max_length=250)
+    reasonOfDisapproval = models.CharField(max_length=250, default="None")
     #appointmentDate=models.DateField(auto_now=True)
     #description=models.TextField(max_length=500)
     status=models.BooleanField(default=False)
