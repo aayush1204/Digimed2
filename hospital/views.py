@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render,redirect,reverse
-from . import models
+from . import models,forms
 from .models import Doctor,Patient,Receptionist, Profile, Appointment, PhoneNumber
 from django.db.models import Sum
 from django.contrib.auth.models import Group
@@ -49,7 +49,7 @@ def doctor_signup_view(request):
         doctor = Doctor.objects.create(user=user,clinicname=clinicname,specialization=specialization,doctorId=user.id)
         doctor.save()
         return HttpResponseRedirect('doctorlogin')
-    
+
     return render(request,'hospital/doctorsignup.html')
 
 def doctor_dashboard_view(request):
@@ -61,9 +61,9 @@ def doctor_dashboard_view(request):
         password=request.POST['password']
 
         user =  auth.authenticate(username=username,password=password)
-        
+
         try:
-            
+
             auth.login(request, user)
             return redirect('doctor-dashboard')
         except:
@@ -106,13 +106,13 @@ def doctor_view_appointment_view(request):
     # patients = models.Patient.objects.all().filter(patientStatus=True,patientId__in=patientid)
 
     # patients = models.AttendsTO.objects.all().filter(did__doctorId=request.user.id, pid__patientStatus=True)
-    
+
     # for i in patients:
     #     temp = models.PhoneNumber.objects.all().get(user__id=i.pid.patientId)
     #     print(temp.phone)
     #     phoneno.append(temp.phone)
     # print(patients)
-    
+
     appointments=zip(appointments,phoneno)
     return render(request,'hospital/doctor_view_appointment.html',{'appointments':appointments,'doctor':doctor})
 
@@ -122,7 +122,7 @@ def patientclick_view(request):
     return render(request,'hospital/patientclick.html')
 
 def patient_signup_view(request):
-    
+
     if (request.method == "POST"):
         first_name=request.POST['firstname']
         last_name=request.POST['lastname']
@@ -160,14 +160,14 @@ def patient_dashboard_view(request):
         password=request.POST['password']
 
         user =  auth.authenticate(username=username,password=password)
-        
+
         try:
-            
+
             auth.login(request, user)
             return redirect('patient-dashboard')
         except:
                 # messages.info(request, "Incorrect Credentials. Please enter the correct ones!")
-            return render(request, 'patientlogin.html')
+            return render(request, 'hospital/patientlogin.html')
     # doctor=Appointment.objects.filter(patientId = patient.patientId)
     # Doctor.objects.get(user_id=patient.assignedDoctorId)
     mydict={
@@ -180,32 +180,52 @@ def patient_dashboard_view(request):
     # 'doctorDepartment':doctor.department,
     # 'admitDate':patient.admitDate,
     }
-    return render(request,'hospital/patient_dashboard.html',context=mydict)  
+    return render(request,'hospital/patient_dashboard.html',context=mydict)
 
 #### RECORDS ####
 def patient_records(request):
     return render(request,'hospital/patient_records.html')
 
 def patient_view_records(request):
-    patient=Patient.objects.get(patientId=request.user.id)
-    print(request.user.id)
-    print(patient)
-    records=models.Records.objects.filter(pid=patient)
-    
-    # for i in records:
-    #     descriptionlist.append(models.Description.objects.filter(rid = i))
-    descriptionlist = models.Description.objects.all().filter(rid__in = models.Records.objects.all().filter(pid=patient))
-    # patients=models.Patient.objects.all().filter(user_id__in=patientid)
-    return render(request,'hospital/patient_view_records.html',{'patient':patient,'descriptionlist':descriptionlist})
+    if request.method == 'POST':
+        desc = models.Description.objects.get(id = request.POST['clicked'])
+        return render(request,'hospital/patient_view_records2.html',{'desc':desc})
+    else:
+        patient=Patient.objects.get(patientId=request.user.id)
+        print(request.user.id)
+        print(patient)
+        records=models.Records.objects.filter(pid=patient)
+
+        # for i in records:
+        #     descriptionlist.append(models.Description.objects.filter(rid = i))
+        descriptionlist = models.Description.objects.all().filter(rid__in = models.Records.objects.all().filter(pid=patient))
+        # patients=models.Patient.objects.all().filter(user_id__in=patientid)
+        return render(request,'hospital/patient_view_records.html',{'patient':patient,'descriptionlist':descriptionlist})
 
 def patient_upload_records(request):
     if request.method == 'GET':
         uploadform = forms.UploadRecordForm()
         return render(request,'hospital/patient_upload_records.html',{'uploadform':uploadform})
     else:
-        uploadform = forms.UploadRecordForm(request.FILES)
-        descmodel = Description()
-        descmodel.recimage = uploadform.recimage
+        uploadform = forms.UploadRecordForm(request.POST,request.FILES)
+        # descmodel = models.Description()
+        # descmodel.recimage = uploadform.recordfile
+        # descmodel.save()
+        recordmodel = models.Records.objects.create(pid= models.Patient.objects.get(patientId=request.user.id ))
+        recordmodel.save()
+        print(uploadform)
+        # if uploadform.is_valid():
+        type = uploadform.cleaned_data['type']
+        title = uploadform.cleaned_data['title']
+        recimage = request.FILES['recimage']
+            # print(uploadform.items())
+            # uploadform.save(commit = False)
+        print(recimage)
+        try:
+            descmodel = models.Description.objects.create(type = type,title = title,recimage = recimage, rid = recordmodel)
+        except:
+            print('failed')
+            # uploadform.rid = recordmodel
         descmodel.save()
         return render(request,'hospital/patient_upload_records.html',{'message':'Uploaded Successfully'})
 
@@ -228,7 +248,7 @@ def admin_signup_view(request):
     #         my_admin_group = Group.objects.get_or_create(name='ADMIN')
     #         my_admin_group[0].user_set.add(user)
     #         return HttpResponseRedirect('adminlogin')
-    if(request.method=="POST" ):    
+    if(request.method=="POST" ):
         first_name=request.POST['firstname']
         last_name=request.POST['lastname']
         # email=request.POST['email']
@@ -252,9 +272,9 @@ def admin_dashboard_view(request):
         password=request.POST['password']
 
         user =  auth.authenticate(username=username,password=password)
-        
+
         try:
-            
+
             auth.login(request, user)
             return redirect('admin-dashboard')
         except:

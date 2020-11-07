@@ -91,7 +91,11 @@
       <div class="card bg-c-green order-card">
         <div class="card-block">
           <!-- <a href="/patient-upload-records"> -->
+          <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
             <h6 class="m-b-20">Upload Records<br><br>{{uploadform.as_p}}</h6>
+            <button type="submit">Upload</button>
+            </form>
           <!-- </a> -->
 
           <br>
