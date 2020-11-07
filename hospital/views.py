@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render,redirect,reverse
 from . import models
-from .models import Doctor,Patient,Receptionist, Profile, Appointment, PhoneNumber
+from .models import Doctor,Patient,Receptionist, Profile, Appointment, PhoneNumber, AttendsTO
 from django.db.models import Sum
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
@@ -49,7 +49,7 @@ def doctor_signup_view(request):
         doctor = Doctor.objects.create(user=user,clinicname=clinicname,specialization=specialization,doctorId=user.id)
         doctor.save()
         return HttpResponseRedirect('doctorlogin')
-    
+
     return render(request,'hospital/doctorsignup.html')
 
 def doctor_dashboard_view(request):
@@ -61,9 +61,9 @@ def doctor_dashboard_view(request):
         password=request.POST['password']
 
         user =  auth.authenticate(username=username,password=password)
-        
+
         try:
-            
+
             auth.login(request, user)
             return redirect('doctor-dashboard')
         except:
@@ -106,13 +106,13 @@ def doctor_view_appointment_view(request):
     # patients = models.Patient.objects.all().filter(patientStatus=True,patientId__in=patientid)
 
     # patients = models.AttendsTO.objects.all().filter(did__doctorId=request.user.id, pid__patientStatus=True)
-    
+
     # for i in patients:
     #     temp = models.PhoneNumber.objects.all().get(user__id=i.pid.patientId)
     #     print(temp.phone)
     #     phoneno.append(temp.phone)
     # print(patients)
-    
+
     appointments=zip(appointments,phoneno)
     return render(request,'hospital/doctor_view_appointment.html',{'appointments':appointments,'doctor':doctor})
 
@@ -122,7 +122,7 @@ def patientclick_view(request):
     return render(request,'hospital/patientclick.html')
 
 def patient_signup_view(request):
-    
+
     if (request.method == "POST"):
         first_name=request.POST['firstname']
         last_name=request.POST['lastname']
@@ -160,9 +160,9 @@ def patient_dashboard_view(request):
         password=request.POST['password']
 
         user =  auth.authenticate(username=username,password=password)
-        
+
         try:
-            
+
             auth.login(request, user)
             return redirect('patient-dashboard')
         except:
@@ -180,7 +180,7 @@ def patient_dashboard_view(request):
     # 'doctorDepartment':doctor.department,
     # 'admitDate':patient.admitDate,
     }
-    return render(request,'hospital/patient_dashboard.html',context=mydict)  
+    return render(request,'hospital/patient_dashboard.html',context=mydict)
 
 #### RECORDS ####
 def patient_records(request):
@@ -191,7 +191,7 @@ def patient_view_records(request):
     print(request.user.id)
     print(patient)
     records=models.Records.objects.filter(pid=patient)
-    
+
     # for i in records:
     #     descriptionlist.append(models.Description.objects.filter(rid = i))
     descriptionlist = models.Description.objects.all().filter(rid__in = models.Records.objects.all().filter(pid=patient))
@@ -228,7 +228,7 @@ def admin_signup_view(request):
     #         my_admin_group = Group.objects.get_or_create(name='ADMIN')
     #         my_admin_group[0].user_set.add(user)
     #         return HttpResponseRedirect('adminlogin')
-    if(request.method=="POST" ):    
+    if(request.method=="POST" ):
         first_name=request.POST['firstname']
         last_name=request.POST['lastname']
         # email=request.POST['email']
@@ -252,9 +252,9 @@ def admin_dashboard_view(request):
         password=request.POST['password']
 
         user =  auth.authenticate(username=username,password=password)
-        
+
         try:
-            
+
             auth.login(request, user)
             return redirect('admin-dashboard')
         except:
@@ -282,3 +282,61 @@ def admin_dashboard_view(request):
     'pendingappointmentcount':pendingappointmentcount,
     }
     return render(request,'hospital/admin_dashboard.html',context=mydict)
+
+def admin_appointment(request):
+    #print(receptionistid__receptionistid)
+    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False)
+    #print(appointment)
+    return render(request,'hospital/admin_approve_appointment.html', {'appointment':appointment})
+
+def admin_patient(request):
+    rid = Receptionist.objects.get(receptionistid = request.user.id )
+    clinic = rid.clinicname
+    doctor = Doctor.objects.filter(clinicname = clinic)
+    ls = []
+    for i in doctor:
+        patient = AttendsTO.objects.filter(did = i)
+        for j in patient:
+            ls.append(j)
+    print(ls)
+    test=[]
+    phoneno=[]
+    for i in patient:
+         temp = PhoneNumber.objects.all().filter(user__id = i.pid.user.id)
+         for i in temp:
+             test.append(i.phone)
+         phoneno.append(test)
+    patient = zip(ls,phoneno)
+
+    return render(request, 'hospital/admin_view_patient.html', {'patient':patient})
+
+def admin_doctor(request):
+    rid = Receptionist.objects.get(receptionistid = request.user.id )
+    clinic = rid.clinicname
+    doctor = Doctor.objects.filter(clinicname = clinic)
+
+    return render(request, 'hospital/admin_view_doctor.html', {'doctor':doctor})
+
+def admin_scheduled_appointment(request):
+    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=True)
+    return render(request,'hospital/admin_scheduled_appointment.html', {'appointment':appointment})
+def approve(request, pk):
+
+    appointment1 = Appointment.objects.get(appointmentId = pk)
+    appointment1.is_approved = True
+    appointment1.save()
+    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False, is_disapproved = False)
+
+    return render(request,'hospital/admin_approve_appointment.html', {'appointment':appointment})
+
+def disapprove(request, pk):
+    appointment1 = Appointment.objects.get(appointmentId = pk)
+    appointment1.reasonOfDisapproval = request.POST['reasonOfDisapproval']
+    appointment1.is_disapproved = True
+    appointment1.save()
+
+    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False, is_disapproved = False)
+
+    return render(request,'hospital/admin_approve_appointment.html', {'appointment':appointment})
+
+    #return render(request,'hospital/aboutsus.html')
