@@ -114,7 +114,7 @@ class Records(models.Model):
 class Description(models.Model):
     type = models.CharField(max_length=50,choices=types,default='Xray')
     title = models.CharField(max_length = 30)
-    recimage=models.FileField(upload_to='records/', null=True, verbose_name="")
+    recimage=models.ImageField(upload_to='records/', null=True, verbose_name="")
     # pid = models.ForeignKey(Patient, on_delete = models.CASCADE )
     rid = models.ForeignKey(Records,on_delete = models.CASCADE)
 
