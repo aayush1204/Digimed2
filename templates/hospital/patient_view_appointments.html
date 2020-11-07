@@ -37,6 +37,7 @@ facebook : fb.com/sumit.luv
   
           <th>Date</th>
           <th>Timing</th>
+          <th>Prescription</th>
         </tr>
       </thead>
       {% for a in appointments %}
@@ -45,6 +46,7 @@ facebook : fb.com/sumit.luv
         <td>{{a.doctorId.user.first_name}} {{a.doctorId.user.last_name}}</td>
         <td>{{a.date}}</td>
         <td>{{a.timing}}</td>
+        <td><button type='button'class="btn btn-fill btn-primary" style="margin-left: 15px" onclick=" location.href='{% url "patient-prescription-view" p=a.appointmentId %}' " >View Prescription</button></td>
 
 
       </tr>

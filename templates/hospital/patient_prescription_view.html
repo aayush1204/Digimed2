@@ -1,0 +1,125 @@
+{% extends 'hospital/patient_base.html' %}
+{% block content %}
+{%load static%}
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+  </style>
+</head>
+<!--
+written By : sumit kumar
+facebook : fb.com/sumit.luv
+-->
+<div class="container">
+    
+        <!-- <div class="col-md-4 col-xl-6">
+          <div class="card bg-c-blue order-card">
+            <div class="card-block">
+              <a href="/doctor-prescription-add-symptom">
+                <h6 class="m-b-20">Add or Delete Symptom</h6>
+              </a>
+              <br>
+              <h2 class="text-right"><i class="fas fa-calendar f-left"></i></h2>
+  
+            </div>
+          </div>
+        </div> -->
+      
+        
+
+           
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h6 class="panel-title">Prescription</h6>
+                </div>
+                <table class="table table-hover" id="dev-table">
+                  <thead>
+                    <tr>
+                        <th></th>
+                      <th>Symptoms</th>
+                      
+                      <th></th>
+                      
+                    </tr>
+                  </thead>
+                  {%for i in symptoms %}
+                  <tr>
+                    <td>Symptom Name- {{i.symptoms}}</td>
+                    <td></td>
+                    <td></td>
+                    
+                    
+                  </tr>
+                 {%endfor%}
+                 <thead>
+                    <tr>
+                        <th></th>
+                      <th>Medical Tests</th>
+                      <td></td>
+                      
+                    </tr>
+                  </thead>
+                  {%for i in medicaltest %}
+                  <tr>
+                    <td>Name - {{i.medicaltest}}</td>
+                    <td></td>
+                    <td></td>
+                   
+                    
+                    
+                  </tr>
+                 {%endfor%}
+                
+                <thead>
+                    <tr>
+                        <td></td>
+                      <th>Medicines</th>
+                      
+                      <td></td>
+                    
+                    </tr>
+                    <tr><th>Medicine Name</th>
+                        <th>Medicine Dosage</th>
+                        <th>Medicine Duration</th>
+                        
+                    </tr>
+                  </thead>
+                  {%for i in medicines %}
+                  <tr>
+                    <td>{{i.mname}}</td>
+                    <td>{{i.mdosage}}</td>
+                    <td>{{i.mduration}}</td>
+                    
+                    
+                  </tr>
+                 {%endfor%}
+                </table>
+
+
+      
+     
+    
+</div>
+<!--
+developed By : sumit kumar
+facebook : fb.com/sumit.luv
+youtube : youtube.com/lazycoders
+-->
+
+{% endblock content %}

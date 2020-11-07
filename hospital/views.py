@@ -515,6 +515,22 @@ def patient_add_appointments(request):
         # patients=models.Patient.objects.all().filter(user_id__in=patientid)
         return render(request,'hospital/patient_book_appointments.html',{'add_appointment_form':add_appointment_form})
 
+def patient_prescription_view(request, p):
+    print(p)
+    a = Appointment.objects.filter(appointmentId=p).first()
+    print(a)
+    
+    x = PrescribedIn.objects.filter(aid=a).first()
+    print(x)
+    pk = x.prescriptionid.prescriptionid
+    print(pk)
+    symptom=Symptoms.objects.filter(prescriptionid=x.prescriptionid)
+    medicaltest=MedicalTest.objects.filter(prescriptionid=x.prescriptionid)
+    medicines = MedicinesPrescribed.objects.filter(prescriptionid=x.prescriptionid)
+    return render(request,'hospital/patient_prescription_view.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
+                                                                        ,'medicines':medicines})
+
+
 def adminclick_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
