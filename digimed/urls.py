@@ -61,6 +61,10 @@ urlpatterns = [
     path('patient-view-doctors', views.patient_view_doctors,name='patient-view-doctors'),
     path('patient-add-doctors', views.patient_add_doctors,name='patient-add-doctors'),
 
+    path('patient-appointment', views.patient_appointments,name='patient-appointment'),
+    path('patient-view-appointments', views.patient_view_appointments,name='patient-view-appointments'),
+    path('patient-book-appointments', views.patient_add_appointments,name='patient-book-appointments'),
+
     path('adminclick', views.adminclick_view),
     path('adminsignup', views.admin_signup_view),
     path('admin-dashboard', views.admin_dashboard_view,name='admin-dashboard'),

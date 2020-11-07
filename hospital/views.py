@@ -487,6 +487,34 @@ def patient_add_doctors(request):
         # patients=models.Patient.objects.all().filter(user_id__in=patientid)
         return render(request,'hospital/patient_add_doctors.html',{'add_doctor_form':add_doctor_form})
 
+#### PATIENT APPOINTMENTS ####
+def patient_appointments(request):
+    return render(request,'hospital/patient_appointments.html')
+
+def patient_view_appointments(request):
+    patient=Patient.objects.get(patientId=request.user.id)
+    appointments = models.Appointment.objects.filter(patientId = patient)
+    return render(request,'hospital/patient_view_appointments.html',{'patient':patient,'appointments':appointments})
+
+def patient_add_appointments(request):
+    if request.method=='POST':
+        add_appointment_form  = forms.AddAppointmentForm(request.POST)
+        did = request.POST['doctorId']
+        date = request.POST['date']
+        timing = request.POST['timing']
+        patientId = models.Patient.objects.get(patientId = request.user.id)
+        doctorId = models.Doctor.objects.get(id = did)
+        print(doctorId.clinicname)
+        receptionistid = models.Receptionist.objects.get(clinicname = doctorId.clinicname )
+
+        appointmentmodel = Appointment.objects.create(patientId = patientId,doctorId = doctorId, receptionistid = receptionistid,date = date,timing = timing)
+        appointmentmodel.save()
+        return render(request,'hospital/patient_book_appointments.html',{'Message':'Added Successfully'})
+    else:
+        add_appointment_form = forms.AddAppointmentForm()
+        # patients=models.Patient.objects.all().filter(user_id__in=patientid)
+        return render(request,'hospital/patient_book_appointments.html',{'add_appointment_form':add_appointment_form})
+
 def adminclick_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
