@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Appointment',
             fields=[
-                ('appointmentId', models.AutoField(primary_key=True, serialize=False)),
+                ('appointmentId', models.AutoField(primary_key=True, serialize=False,default = 1)),
                 ('date', models.DateTimeField(default=datetime.datetime.now)),
                 ('timing', models.DateTimeField(default=datetime.datetime.now)),
                 ('isCancelled', models.BooleanField(default=False)),
@@ -27,125 +27,125 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Patient',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, default=1, primary_key=True, serialize=False, verbose_name='ID')),
                 ('patientId', models.IntegerField(default=0)),
                 ('patientStatus', models.BooleanField(default=True)),
                 ('patientOverduePay', models.IntegerField(default=0)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, default=1)),
             ],
         ),
         migrations.CreateModel(
             name='Prescription',
             fields=[
-                ('prescriptionid', models.AutoField(default=0, primary_key=True, serialize=False)),
+                ('prescriptionid', models.AutoField( primary_key=True, serialize=False, default=1)),
             ],
         ),
         migrations.CreateModel(
             name='Symptoms',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, default=1, serialize=False, verbose_name='ID')),
                 ('symptoms', models.CharField(max_length=20)),
-                ('prescriptionid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Prescription')),
+                ('prescriptionid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Prescription', default=1)),
             ],
         ),
         migrations.CreateModel(
             name='Records',
             fields=[
-                ('rid', models.AutoField(primary_key=True, serialize=False)),
-                ('pid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Patient')),
+                ('rid', models.AutoField(primary_key=True, serialize=False, default=1)),
+                ('pid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Patient', default=1)),
             ],
         ),
         migrations.CreateModel(
             name='Receptionist',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('receptionistid', models.IntegerField(default=0)),
                 ('clinicname', models.CharField(max_length=20, null=True)),
                 ('jobstatus', models.CharField(max_length=1)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, default=1)),
             ],
         ),
         migrations.CreateModel(
             name='Profile',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('sex', models.CharField(blank=True, max_length=1)),
                 ('age', models.IntegerField()),
                 ('Bname', models.CharField(blank=True, max_length=30)),
                 ('Sname', models.CharField(blank=True, max_length=30)),
                 ('city', models.CharField(blank=True, max_length=30)),
                 ('pincode', models.IntegerField()),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, default=1)),
             ],
         ),
         migrations.CreateModel(
             name='PrescribedIn',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('fees', models.IntegerField()),
-                ('aid', models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='hospital.Appointment')),
-                ('prescriptionid', models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='hospital.Prescription')),
+                ('aid', models.ForeignKey( on_delete=django.db.models.deletion.CASCADE, to='hospital.Appointment', default=1)),
+                ('prescriptionid', models.ForeignKey( on_delete=django.db.models.deletion.CASCADE, to='hospital.Prescription', default=1)),
             ],
         ),
         migrations.CreateModel(
             name='PhoneNumber',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('phone', models.IntegerField()),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, default=1)),
             ],
         ),
         migrations.CreateModel(
             name='MedicinesPrescribed',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('mdosage', models.IntegerField()),
                 ('mduration', models.CharField(max_length=20)),
                 ('mname', models.CharField(max_length=20)),
-                ('prescriptionid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Prescription')),
+                ('prescriptionid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Prescription', default=1)),
             ],
         ),
         migrations.CreateModel(
             name='MedicalTest',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('medicaltest', models.CharField(max_length=20)),
-                ('prescriptionid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Prescription')),
+                ('prescriptionid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Prescription', default=1)),
             ],
         ),
         migrations.CreateModel(
             name='Doctor',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('doctorId', models.IntegerField(default=0)),
                 ('clinicname', models.CharField(max_length=30, null=True)),
                 ('specialization', models.CharField(choices=[('Cardiologist', 'Cardiologist'), ('Dermatologists', 'Dermatologists'), ('Emergency Medicine Specialists', 'Emergency Medicine Specialists'), ('Allergists/Immunologists', 'Allergists/Immunologists'), ('Anesthesiologists', 'Anesthesiologists'), ('Colon and Rectal Surgeons', 'Colon and Rectal Surgeons')], max_length=30, null=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, default=1)),
             ],
         ),
         migrations.CreateModel(
             name='Description',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('type', models.CharField(choices=[('Xray', 'Xray')], default='Xray', max_length=50)),
                 ('title', models.CharField(max_length=30)),
                 ('recimage', models.FileField(null=True, upload_to='records/', verbose_name='')),
-                ('rid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Records')),
+                ('rid', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Records', default=1)),
             ],
         ),
         migrations.AddField(
             model_name='appointment',
             name='doctorId',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Doctor'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Doctor', default=1),
         ),
         migrations.AddField(
             model_name='appointment',
             name='patientId',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Patient'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hospital.Patient', default=1),
         ),
         migrations.AddField(
             model_name='appointment',
             name='receptionistid',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='hospital.Receptionist'),
+            field=models.ForeignKey( on_delete=django.db.models.deletion.CASCADE, to='hospital.Receptionist', default=1),
         ),
     ]

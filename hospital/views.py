@@ -418,7 +418,7 @@ def patient_appointments_cancel(request,p):
     a = Appointment.objects.get(appointmentId=p)
     a.isCancelled=True
     a.save()
-    
+
     patient=Patient.objects.get(patientId=request.user.id)
     appointments = models.Appointment.objects.filter(patientId = patient)
     return render(request,'hospital/patient_view_appointments.html',{'patient':patient,'appointments':appointments})
@@ -453,7 +453,7 @@ def patient_upload_records(request):
         # descmodel = models.Description()
         # descmodel.recimage = uploadform.recordfile
         # descmodel.save()
-        recordmodel = models.Records.objects.create(pid= models.Patient.objects.get(patientId=request.user.id ))
+        recordmodel,check = models.Records.objects.get_or_create(pid= models.Patient.objects.get(patientId=request.user.id ))
         recordmodel.save()
         print(uploadform)
         # if uploadform.is_valid():
@@ -469,7 +469,7 @@ def patient_upload_records(request):
             print('failed')
             # uploadform.rid = recordmodel
         descmodel.save()
-        return render(request,'hospital/patient_records.html.html',{'message':'Uploaded Successfully'})
+        return render(request,'hospital/patient_records.html',{'message':'Uploaded Successfully'})
 
 #### PATIENT MY DOCTORS ####
 def patient_doctors(request):
@@ -491,9 +491,9 @@ def patient_add_doctors(request):
         did = request.POST['did']
         doc = models.Doctor.objects.get(id = did)
         patient = models.Patient.objects.get(patientId = request.user.id)
-        attendstomodel = models.AttendsTO.objects.create(pid = patient,did = doc)
+        attendstomodel,check = models.AttendsTO.objects.get_or_create(pid = patient,did = doc)
         attendstomodel.save()
-        return render(request,'hospital/patient_add_doctors.html',{'Message':'Added Successfully'})
+        return render(request,'hospital/patient_add_doctors2.html',{'Message':'Added Successfully'})
     else:
         add_doctor_form = forms.AddDoctorForm()
         # patients=models.Patient.objects.all().filter(user_id__in=patientid)
@@ -518,10 +518,10 @@ def patient_add_appointments(request):
         doctorId = models.Doctor.objects.get(id = did)
         print(doctorId.clinicname)
         receptionistid = models.Receptionist.objects.get(clinicname = doctorId.clinicname )
-
-        appointmentmodel = Appointment.objects.create(patientId = patientId,doctorId = doctorId, receptionistid = receptionistid,date = date,timing = timing)
+        latestid = Appointment.objects.latest('appointmentId').appointmentId
+        appointmentmodel ,check= Appointment.objects.get_or_create(appointmentId=latestid+1,patientId = patientId,doctorId = doctorId, receptionistid = receptionistid,date = date,timing = timing)
         appointmentmodel.save()
-        return render(request,'hospital/patient_book_appointments.html',{'Message':'Added Successfully'})
+        return render(request,'hospital/patient_book_appointments2.html',{'Message':'Added Successfully'})
     else:
         add_appointment_form = forms.AddAppointmentForm()
         # patients=models.Patient.objects.all().filter(user_id__in=patientid)
