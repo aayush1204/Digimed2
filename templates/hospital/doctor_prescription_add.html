@@ -39,7 +39,11 @@ facebook : fb.com/sumit.luv
             </div>
           </div>
         </div> -->
-        
+        <h4>Patient Name - {{appointment.patientId.user.first_name}} {{appointment.patientId.user.last_name}}</h4>
+        <h4>Age - {{appointment.patientId.user.profile.age}}</h4>
+        <h4>Address = {{appointment.patientId.user.profile.Bname}},{{appointment.patientId.user.profile.Sname}},{{appointment.patientId.user.profile.city}}-{{appointment.patientId.user.profile.pincode}}</h4>
+        <h4>Appointment Date and Time - {{appointment.date}}</h4>
+        <h4>Doctor Name - {{appointment.doctorId.user.first_name}} {{appointment.doctorId.user.last_name}}</h4>
         
         <form method="post" action="{% url 'doctor-add-symptom' p=pk %}" class="bg-white p-5 contact-form" >
             {% csrf_token %}

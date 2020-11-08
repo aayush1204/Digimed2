@@ -162,7 +162,7 @@ def doctor_prescription_add(request,p):
         medicaltest=MedicalTest.objects.filter(prescriptionid=presobj)
         medicines = MedicinesPrescribed.objects.filter(prescriptionid=presobj)
         return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
-                                                                        ,'medicines':medicines})
+                                                                        ,'medicines':medicines,'appointment':a})
 
     x = PrescribedIn.objects.filter(aid=a).first()
     print(x)
@@ -171,8 +171,9 @@ def doctor_prescription_add(request,p):
     symptom=Symptoms.objects.filter(prescriptionid=x.prescriptionid)
     medicaltest=MedicalTest.objects.filter(prescriptionid=x.prescriptionid)
     medicines = MedicinesPrescribed.objects.filter(prescriptionid=x.prescriptionid)
+
     return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
-                                                                        ,'medicines':medicines})
+                                                                        ,'medicines':medicines,'appointment':a})
 
 def doctor_prescription_add_symptom(request, p):
     if request.method=="POST":
