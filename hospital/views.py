@@ -68,7 +68,7 @@ def doctor_dashboard_view(request):
             return redirect('doctor-dashboard')
         except:
                 # messages.info(request, "Incorrect Credentials. Please enter the correct ones!")
-            return render(request, 'doctorlogin.html')
+            return render(request, 'hospital/doctorlogin.html')
     appointmentcount=Appointment.objects.all().filter(isCancelled=False,doctorId=request.user.id).count()
     # patientdischarged=models.PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
 
