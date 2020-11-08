@@ -68,6 +68,8 @@ class Appointment(models.Model):
     #description=models.TextField(max_length=500)
     status=models.BooleanField(default=False)
     is_disapproved = models.BooleanField(default=False)
+    is_notified = models.BooleanField(default=False)
+
 
 
 #Developed By : sumit kumar
