@@ -39,19 +39,23 @@ facebook : fb.com/sumit.luv
             </div>
           </div>
         </div> -->
-        <h1>PRescriptionid = {{pk}}</h1>
+        <h4>Patient Name - {{appointment.patientId.user.first_name}} {{appointment.patientId.user.last_name}}</h4>
+        <h4>Age - {{appointment.patientId.user.profile.age}}</h4>
+        <h4>Address = {{appointment.patientId.user.profile.Bname}},{{appointment.patientId.user.profile.Sname}},{{appointment.patientId.user.profile.city}}-{{appointment.patientId.user.profile.pincode}}</h4>
+        <h4>Appointment Date and Time - {{appointment.date}}</h4>
+        <h4>Doctor Name - {{appointment.doctorId.user.first_name}} {{appointment.doctorId.user.last_name}}</h4>
         
         <form method="post" action="{% url 'doctor-add-symptom' p=pk %}" class="bg-white p-5 contact-form" >
             {% csrf_token %}
             <div class="container register-form">
               <div class="form">
                 <div class="note">
-                  <p>Add Symptom</p>
+                  <h3 style="text-align: left">Add Symptom</h3>
                 </div>
         
                 <div class="form-content">
-                  <div class="row">
-                    <div class="col-md-6">
+                  <div class="row" style="margin: 25px ;margin-right: 100px">
+                    <div class="col-md-6" >
         
                       <div class="form-group">
                         <input type="text" class="form-control" id="symptom" name="symptom" value="" placeholder="Symptom">
@@ -59,7 +63,7 @@ facebook : fb.com/sumit.luv
                       </div>
         
                     </div>
-                    <button type="submit" class="btnSubmit">Add</button>
+                    <button type="submit" class="btn btn-fill btn-primary" >Add</button>
                   </div>
                   
                   
@@ -70,14 +74,14 @@ facebook : fb.com/sumit.luv
 
             <form method="post" action="{% url 'doctor-add-medicaltest' p=pk %}" class="bg-white p-5 contact-form" >
                 {% csrf_token %}
-                <div class="container register-form">
+                <div class="container">
                   <div class="form">
-                    <div class="note">
-                      <p>Add Medical Test</p>
+                    <div class="note" >
+                      <h3 style="text-align: left">Add Medical Test</h3>
                     </div>
             
                     <div class="form-content">
-                      <div class="row">
+                      <div class="row" style="margin: 25px ;margin-right: 100px">
                         <div class="col-md-6">
             
                           <div class="form-group">
@@ -86,7 +90,7 @@ facebook : fb.com/sumit.luv
                           </div>
             
                         </div>
-                        <button type="submit" class="btnSubmit">Add</button>
+                        <button type="submit" class="btn btn-fill btn-primary" >Add</button>
                       </div>
                       
                       
@@ -100,11 +104,11 @@ facebook : fb.com/sumit.luv
                     <div class="container register-form">
                       <div class="form">
                         <div class="note">
-                          <p>Add Medicines</p>
+                          <h3  style="text-align: left">Add Medicines</h3>
                         </div>
                 
                         <div class="form-content">
-                          <div class="row">
+                          <div class="row" style="margin: 25px ;margin-right: 100px">
                             <div class="col-md-6">
                 
                               <div class="form-group">
@@ -121,7 +125,7 @@ facebook : fb.com/sumit.luv
                               </div>
                 
                             </div>
-                            <button type="submit" class="btnSubmit">Add</button>
+                            <button type="submit"class="btn btn-fill btn-primary" >Add</button>
                           </div>
                           
                           

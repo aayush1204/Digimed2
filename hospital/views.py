@@ -68,7 +68,7 @@ def doctor_dashboard_view(request):
             return redirect('doctor-dashboard')
         except:
                 # messages.info(request, "Incorrect Credentials. Please enter the correct ones!")
-            return render(request, 'doctorlogin.html')
+            return render(request, 'hospital/doctorlogin.html')
     appointmentcount=Appointment.objects.all().filter(isCancelled=False,doctorId=request.user.id).count()
     # patientdischarged=models.PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
 
@@ -162,7 +162,7 @@ def doctor_prescription_add(request,p):
         medicaltest=MedicalTest.objects.filter(prescriptionid=presobj)
         medicines = MedicinesPrescribed.objects.filter(prescriptionid=presobj)
         return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
-                                                                        ,'medicines':medicines})
+                                                                        ,'medicines':medicines,'appointment':a})
 
     x = PrescribedIn.objects.filter(aid=a).first()
     print(x)
@@ -171,8 +171,9 @@ def doctor_prescription_add(request,p):
     symptom=Symptoms.objects.filter(prescriptionid=x.prescriptionid)
     medicaltest=MedicalTest.objects.filter(prescriptionid=x.prescriptionid)
     medicines = MedicinesPrescribed.objects.filter(prescriptionid=x.prescriptionid)
+
     return render(request,'hospital/doctor_prescription_add.html',{'symptoms':symptom , 'pk':pk,'medicaltest':medicaltest
-                                                                        ,'medicines':medicines})
+                                                                        ,'medicines':medicines,'appointment':a})
 
 def doctor_prescription_add_symptom(request, p):
     if request.method=="POST":
@@ -411,6 +412,17 @@ def patient_dashboard_view(request):
     # 'admitDate':patient.admitDate,
     }
     return render(request,'hospital/patient_dashboard.html',context=mydict)
+
+def patient_appointments_cancel(request,p):
+
+    a = Appointment.objects.get(appointmentId=p)
+    a.isCancelled=True
+    a.save()
+    
+    patient=Patient.objects.get(patientId=request.user.id)
+    appointments = models.Appointment.objects.filter(patientId = patient)
+    return render(request,'hospital/patient_view_appointments.html',{'patient':patient,'appointments':appointments})
+
 
 #### RECORDS ####
 def patient_records(request):
