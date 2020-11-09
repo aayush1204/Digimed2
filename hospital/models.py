@@ -16,8 +16,8 @@ departments=[('Cardiologist','Cardiologist'),
 
 types = [('Xray','Xray')]
 class Doctor(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
-    doctorId = models.IntegerField(default = 0)
+    user=models.OneToOneField(User,on_delete=models.CASCADE,default = 1)
+    doctorId = models.IntegerField(default = 1)
     clinicname = models.CharField(max_length = 30,null = True)
     specialization = models.CharField(max_length = 30,choices = departments,null = True)
     @property
@@ -30,10 +30,10 @@ class Doctor(models.Model):
 
 
 class Patient(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
-    patientId= models.IntegerField(default = 0)
+    user=models.OneToOneField(User,on_delete=models.CASCADE,default = 1)
+    patientId= models.IntegerField(default = 1)
     patientStatus = models.BooleanField(default=True)
-    patientOverduePay = models.IntegerField(default = 0)
+    patientOverduePay = models.IntegerField(default = 1)
     #profile_pic= models.ImageField(upload_to='profile_pic/PatientProfilePic/',null=True,blank=True)
 
     #assignedDoctorId = models.PositiveIntegerField(null=True)
@@ -44,8 +44,8 @@ class Patient(models.Model):
         return self.user.id
 
 class Receptionist(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
-    receptionistid = models.IntegerField(default = 0)
+    user=models.OneToOneField(User,on_delete=models.CASCADE,default = 1)
+    receptionistid = models.IntegerField(default = 1)
     clinicname = models.CharField(max_length = 20,null =  True)
     jobstatus = models.CharField(max_length = 1)
 
@@ -55,10 +55,10 @@ class Receptionist(models.Model):
 
 
 class Appointment(models.Model):
-    appointmentId = models.AutoField(primary_key= True)
-    patientId=models.ForeignKey(Patient, on_delete=models.CASCADE )
-    doctorId=models.ForeignKey(Doctor, on_delete=models.CASCADE )
-    receptionistid = models.ForeignKey(Receptionist, on_delete=models.CASCADE ,default = 0)
+    appointmentId = models.AutoField(primary_key= True,default = 1)
+    patientId=models.ForeignKey(Patient, on_delete=models.CASCADE, default = 1 )
+    doctorId=models.ForeignKey(Doctor, on_delete=models.CASCADE, default = 1 )
+    receptionistid = models.ForeignKey(Receptionist, on_delete=models.CASCADE ,default = 1)
     date = models.DateTimeField(default=datetime.now)
     timing=models.DateTimeField(default=datetime.now)
     isCancelled=models.BooleanField(default=False)
@@ -91,36 +91,36 @@ class Appointment(models.Model):
 
 
 class Prescription(models.Model):
-    prescriptionid = models.AutoField(primary_key=True)
+    prescriptionid = models.AutoField(primary_key=True,default =1 )
 
 class MedicinesPrescribed(models.Model):
-    prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE )
+    prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE, default = 1 )
     mdosage = models.IntegerField()
     mduration = models.CharField(max_length =20)
     mname = models.CharField(max_length= 20)
 
 class MedicalTest(models.Model):
-    prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE )
+    prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE,default = 1 )
     medicaltest = models.CharField(max_length = 20)
 
 class Symptoms(models.Model):
-    prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE )
+    prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE, default =1  )
     symptoms = models.CharField(max_length = 20)
 
 class Records(models.Model):
-    pid = models.ForeignKey(Patient, on_delete = models.CASCADE )
-    rid = models.AutoField(primary_key=True)
+    pid = models.ForeignKey(Patient, on_delete = models.CASCADE, default = 1 )
+    rid = models.AutoField(primary_key=True,default = 1)
 
 class Description(models.Model):
     type = models.CharField(max_length=50,choices=types,default='Xray')
     title = models.CharField(max_length = 30)
     recimage=models.ImageField(upload_to='records/', null=True, verbose_name="")
     # pid = models.ForeignKey(Patient, on_delete = models.CASCADE )
-    rid = models.ForeignKey(Records,on_delete = models.CASCADE)
+    rid = models.ForeignKey(Records,on_delete = models.CASCADE, default = 1)
 
 class AttendsTO(models.Model):
-    pid = models.ForeignKey(Patient, on_delete = models.CASCADE )
-    did = models.ForeignKey(Doctor, on_delete = models.CASCADE )
+    pid = models.ForeignKey(Patient, on_delete = models.CASCADE,default =1  )
+    did = models.ForeignKey(Doctor, on_delete = models.CASCADE, default = 1 )
 
 # from django.db import models
 # from django.contrib.auth.models import AbstractUser
@@ -143,13 +143,13 @@ class Profile(models.Model):
     Sname = models.CharField(max_length=30, blank=True)
     city = models.CharField(max_length=30, blank=True)
     pincode= models.IntegerField()
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    user=models.OneToOneField(User,on_delete=models.CASCADE, default = 1)
 
 class PhoneNumber(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,default = 1)
     phone = models.IntegerField()
 
 class PrescribedIn(models.Model):
-    prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE,default = 0 )
+    prescriptionid = models.ForeignKey(Prescription, on_delete=models.CASCADE,default = 1 )
     fees = models.IntegerField()
-    aid = models.ForeignKey(Appointment,on_delete=models.CASCADE,default = 0)
+    aid = models.ForeignKey(Appointment,on_delete=models.CASCADE,default = 1)

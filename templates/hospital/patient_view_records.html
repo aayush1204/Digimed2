@@ -31,8 +31,8 @@
         <tr>
           <th>Record ID</th>
           <th>Description</th>
-          <th>Date</th>
-          <th>Status</th>
+          <!-- <th>Date</th> -->
+
           <th></th>
         </tr>
       </thead>
@@ -40,8 +40,8 @@
       <tr>
         <td> {{a.rid.rid}}</td>
         <td> {{a.type}} </td>
-        <td> {{a.title}} </td>
-        <td> <img src={{a.recimage}}></img></td>
+
+        <!-- <td> <img src={{a.recimage}}></img></td> -->
 
         <td> <form action="" method="post">
                    {% csrf_token %}

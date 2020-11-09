@@ -425,7 +425,7 @@ def patient_appointments_cancel(request,p):
     a = Appointment.objects.get(appointmentId=p)
     a.isCancelled=True
     a.save()
-    
+
     patient=Patient.objects.get(patientId=request.user.id)
     appointments = models.Appointment.objects.filter(patientId = patient)
     return render(request,'hospital/patient_view_appointments.html',{'patient':patient,'appointments':appointments})
@@ -460,7 +460,7 @@ def patient_upload_records(request):
         # descmodel = models.Description()
         # descmodel.recimage = uploadform.recordfile
         # descmodel.save()
-        recordmodel = models.Records.objects.create(pid= models.Patient.objects.get(patientId=request.user.id ))
+        recordmodel,check = models.Records.objects.get_or_create(pid= models.Patient.objects.get(patientId=request.user.id ))
         recordmodel.save()
         print(uploadform)
         # if uploadform.is_valid():
@@ -498,9 +498,9 @@ def patient_add_doctors(request):
         did = request.POST['did']
         doc = models.Doctor.objects.get(id = did)
         patient = models.Patient.objects.get(patientId = request.user.id)
-        attendstomodel = models.AttendsTO.objects.create(pid = patient,did = doc)
+        attendstomodel,check = models.AttendsTO.objects.get_or_create(pid = patient,did = doc)
         attendstomodel.save()
-        return render(request,'hospital/patient_add_doctors.html',{'Message':'Added Successfully'})
+        return render(request,'hospital/patient_add_doctors2.html',{'Message':'Added Successfully'})
     else:
         add_doctor_form = forms.AddDoctorForm()
         # patients=models.Patient.objects.all().filter(user_id__in=patientid)
@@ -525,8 +525,8 @@ def patient_add_appointments(request):
         doctorId = models.Doctor.objects.get(id = did)
         print(doctorId.clinicname)
         receptionistid = models.Receptionist.objects.get(clinicname = doctorId.clinicname )
-
-        appointmentmodel = Appointment.objects.create(patientId = patientId,doctorId = doctorId, receptionistid = receptionistid,date = date,timing = timing)
+        latestid = Appointment.objects.latest('appointmentId').appointmentId
+        appointmentmodel ,check= Appointment.objects.get_or_create(appointmentId=latestid+1,patientId = patientId,doctorId = doctorId, receptionistid = receptionistid,date = date,timing = timing)
         appointmentmodel.save()
         return render(request,'hospital/patient_appointments.html',{'Message':'Added Successfully'})
     else:
@@ -683,7 +683,7 @@ def admin_dashboard_view(request):
 
 def admin_appointment(request):
     #print(receptionistid__receptionistid)
-    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False)
+    appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False, isCancelled=False)
     #print(appointment)
     return render(request,'hospital/admin_approve_appointment.html', {'appointment':appointment})
 
@@ -748,6 +748,48 @@ def admin_patient(request):
     patient = zip(ls,phoneno)
 
     return render(request, 'hospital/admin_view_patient.html', {'patient':patient})
+
+def confirm(request, pk):
+    app =  Appointment.objects.get(appointmentId = pk)
+    app.is_notified = True
+    app.save()
+    rid = Receptionist.objects.get(receptionistid = request.user.id )
+    clinic = rid.clinicname
+    doctor = Doctor.objects.filter(clinicname = clinic)
+    ls = []
+    for i in doctor:
+        patient = AttendsTO.objects.filter(did = i)
+        for j in patient:
+            ls.append(j)
+    doctor_count =  Doctor.objects.filter(clinicname = clinic).count()
+    appointment_req = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False,isCancelled = False)
+    req_appointment_count = Appointment.objects.filter(receptionistid__receptionistid = request.user.id, is_approved=False,isCancelled = False).count()
+    can_appointment = Appointment.objects.filter(receptionistid__receptionistid = request.user.id,isCancelled = True, is_notified=False)
+    can_appointment_count = Appointment.objects.filter(receptionistid__receptionistid = request.user.id,isCancelled = True,is_notified=False).count()
+    #patient_count = count(ls)
+    #pendingpatientcount=models.Patient.objects.all().count()
+
+    #appointmentcount=models.Appointment.objects.all().count()
+    #pendingappointmentcount=models.Appointment.objects.all().count()
+    #appointment = Appointment.objects.filter()
+    mydict={
+    'clinic':clinic,
+    'doctor':doctor,
+    'patient':patient,
+    'doctor_count':doctor_count,
+    #z3'pendingdoctorcount':pendingdoctorcount,
+    #'patient_count':patient_count,
+    #'pendingpatientcount':pendingpatientcount,
+    #'appointmentcount':appointmentcount,
+    #'pendingappointmentcount':pendingappointmentcount,
+    'can_appointment':can_appointment,
+    'can_appointment_count':can_appointment_count,
+    'req_appointment_count': req_appointment_count,
+    'appointment_req' :appointment_req
+    }
+
+    return render(request,'hospital/admin_dashboard.html',context=mydict)
+
 
 def admin_doctor(request):
     rid = Receptionist.objects.get(receptionistid = request.user.id )
