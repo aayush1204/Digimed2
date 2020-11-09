@@ -94,7 +94,7 @@
           <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
             <h6 class="m-b-20">Upload Records<br><br>{{uploadform.as_p}}</h6>
-            <button type="submit">Upload</button>
+            <button type="submit" onclick="myFunction()">Upload</button>
             </form>
           <!-- </a> -->
 
@@ -106,10 +106,10 @@
 
   </div>
 </div>
-<!--
-  developed By : sumit kumar
-  facebook : fb.com/sumit.luv
-  youtube : youtube.com/lazycoders
-  -->
+<script>
+  function myFunction() {
+    alert("Records Uploaded Successfully!");
+  }
+  </script>
 <br><br><br><br><br><br><br><br>
 {% endblock content %}

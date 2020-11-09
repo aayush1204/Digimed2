@@ -66,7 +66,7 @@ urlpatterns = [
     path('patient-appointment', views.patient_appointments,name='patient-appointment'),
     path('patient-view-appointments', views.patient_view_appointments,name='patient-view-appointments'),
     path('patient-book-appointments', views.patient_add_appointments,name='patient-book-appointments'),
-
+    path('confirm/<slug:pk>', views.confirm,name='confirm'),
     path('adminclick', views.adminclick_view),
     path('adminsignup', views.admin_signup_view),
     path('admin-dashboard', views.admin_dashboard_view,name='admin-dashboard'),

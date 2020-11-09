@@ -31,18 +31,23 @@
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
+  position:fixed;
+  bottom: 200px;
+  right: 400px;
   border: 3px solid #f1f1f1;
+  opacity: 1.0;
   z-index: 9;
+  background-color: white;
+  width: 500px;
+  height: 350px;
 }
 
 /* Add styles to the form container */
 .form-container {
   max-width: 300px;
   padding: 10px;
-  background-color: white;
+  background-color:white;
+
 }
 
 /* Full-width input fields */
@@ -83,10 +88,7 @@
 }
   </style>
 </head>
-<!--
-written By : sumit kumar
-facebook : fb.com/sumit.luv
--->
+   
 <div class="container">
   <div class="panel panel-primary">
     <div class="panel-heading">
@@ -97,33 +99,45 @@ facebook : fb.com/sumit.luv
         <tr>
           <th>Doctor Name</th>
           <th>Patient Name</th>
-          <th>Date</th>
-          <th>Timing</th>
+          <th>Date and Time</th>
+          
           <th>Approve</th>
           <th>Reject</th>
         </tr>
       </thead>
       {% for a in appointment %}
       <tr>
-        <td> {{a.doctorId.user.first_name}}</td>
-        <td>{{a.patientId.user.first_name}}</td>
+        <td> {{a.doctorId.user.first_name}} {{a.doctorId.user.last_name}}</td>
+        <td>{{a.patientId.user.first_name}} {{a.doctorId.user.last_name}}</td>
         <td>{{a.date}}</td>
-        <td>{{a.timing}}</td>
+        
         <td><a class="btn btn-primary btn-xs" href="{% url 'approve' pk=a.appointmentId %}"><span class="glyphicon glyphicon-ok"></span></a></td>
-        <button class="open-button" onclick="openForm()">Open Form</button>
+        <td><button class="btn btn-danger btn-xs" onclick="openForm()"><span class="glyphicon glyphicon-remove"></span></button></td>
 
   <div class="form-popup" id="myForm">
     <form action="{% url 'disapprove' pk=a.appointmentId %}" method ="post" class="form-container">
       {% csrf_token %}
+      <div class="container register-form">
+        <div class="form">
       <h1>Dissapproval of Appointment</h1>
-
+          <br>
       <label><b>Reason for Dissapproval</b></label>
+          <br>
+      <div class="form-content">
       <input type="text" placeholder="Enter Reason" name="reasonOfDisapproval" required><br>
+      </div>
+      <br>
+      <div class="form-content">
+      <button type="submit" class="btn btn-primary">Disapprove</button><br>
+    </div>
+    <br>
+      <div class="form-content">
+      <button type="button" class="btn btn-danger" onclick="closeForm()">Close</button>
+    </div>
 
-
-
-      <button type="submit" class="btn">Disapprove</button><br>
-      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </div>
+      </div>
+    
     </form>
   </div>
       </tr>
@@ -133,14 +147,10 @@ facebook : fb.com/sumit.luv
 
 
 </div>
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+ 
 <script>
 function openForm() {
-  document.getElementById("myForm").style.display = "block";
+  document.getElementById("myForm").style.display = "inline-block";
 }
 
 function closeForm() {

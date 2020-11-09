@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>LazyCoder || sumit</title>
+  <title>Doctor SignUp</title>
   <style type="text/css">
     body {
       color: #aa082e;
@@ -67,7 +67,7 @@
     <div class="container register-form">
       <div class="form">
         <div class="note">
-          <p>Register In Hospital</p>
+          <p>Sign-Up To Create A Dashboard</p>
         </div>
 
         <div class="form-content">
@@ -81,85 +81,89 @@
               <input type="text" class="form-control" id="firstname" name="firstname" value="" placeholder="First Name">
 
             </div>
-
+              
               <div class="form-group">
                 <input type="text" class="form-control" id="username" name="username" value="" placeholder="User Name">
-
+  
               </div>
-
+              
               <div class="form-group">
                 <input type="text" class="form-control" id="clinicname" name="clinicname" value="" placeholder="ClinicName">
               </div>
-
+             
               <div class="form-group">
 
                   <div class="select-wrap">
                     <!-- <div class="icon"><span class="ion-ios-arrow-down"></span></div> -->
                     <select name="specialization" id="specialization" class="form-control">
                       <option value="" disabled selected>Specialization</option>
-                      <option value="Emergency Medicine Specialists">Emergency Medicine Specialists</option>
-                      <option value="Cardiologist">Cardiologist</option>
+                      <option value="Emergency Medicine Specialists">Emergency Medicine Specialists</option> 
+                      <option value="Cardiologist">Cardiologist</option> 
                       <option value="Dermatologists">Dermatologists</option>
                       <option value="Allergists/Immunologists">Allergists/Immunologists</option>
                       <option value="Anesthesiologists">Anesthesiologists</option>
                       <option value="Colon and Rectal Surgeons">Colon and Rectal Surgeons</option>
                     </select>
                   </div>
-
+                  <br>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="sex" name="sex" value="" placeholder="Sex">
+                  </div>
+                
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="age" name="age" value="" placeholder="Age">
+                  </div>
+               
               </div>
 
             </div>
             <div class="col-md-6">
-
+             
               <div class="form-group">
                 <input type="text" class="form-control" id="lastname" name="lastname" value="" placeholder="LastName">
               </div>
-
+            
               <div class="form-group">
-                <input type="password" class="form-control" id="password" name="password" value="" placeholder="Password">
+                <input type="text" class="form-control" id="password" name="password" value="" placeholder="Password">
               </div>
-
-              <div class="form-group">
-                <input type="text" class="form-control" id="sex" name="sex" value="" placeholder="Sex">
-              </div>
-
-              <div class="form-group">
-                <input type="text" class="form-control" id="age" name="age" value="" placeholder="Age">
-              </div>
-
+              
               <div class="form-group">
                 <input type="text" class="form-control" id="buildingname" name="buildingname" value="" placeholder="buildingname">
               </div>
-
+            
               <div class="form-group">
                 <input type="text" class="form-control" id="SName" name="Sname" value="" placeholder="Sname">
               </div>
-
+             
               <div class="form-group">
                 <input type="text" class="form-control" id="city" name="city" value="" placeholder="CIty">
               </div>
-
+             
               <div class="form-group">
                 <input type="text" class="form-control" id="pincode" name="pincode" value="" placeholder="Pincode">
               </div>
-
+              
 
             </div>
           </div>
-          <button type="submit" class="btnSubmit">Register</button>
+          <button type="submit" onclick="ValidateForm()" class="btnSubmit">Register</button>
           <div class="text-center">Already have an account? <a href="doctorlogin">Login here</a></div>
         </div>
       </div>
     </div>
 
   </form>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    	function ValidateForm() 
+	{
+    alert("Registered Successfully");
+  }
+</script>
+
 
   {% include "hospital/footer.html" %}
 </body>
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+ 
 
 </html>
